@@ -1,0 +1,9099 @@
+```index.tsx
+
+import "./index.css";
+
+import React from "react";
+
+import { render } from "react-dom";
+
+import { App } from "./App";
+
+render(<App />, document.getElementById("root"));
+
+```
+
+```App.tsx
+
+import React from 'react'
+
+import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
+
+import { Sidebar } from './components/Sidebar'
+
+import { DashboardPage } from './pages/DashboardPage'
+
+import { IssuesListPage } from './pages/IssuesListPage'
+
+import { IssueDetailPage } from './pages/IssueDetailPage'
+
+import { MonthlyReportPage } from './pages/MonthlyReportPage'
+
+import { FigmaReviewPage } from './pages/FigmaReviewPage'
+
+import { GitHubPRPage } from './pages/GitHubPRPage'
+
+import { SettingsPage } from './pages/SettingsPage'
+
+import { OnboardingPage } from './pages/OnboardingPage'
+
+function AppLayout({ children }: { children: React.ReactNode }) {
+
+  const location = useLocation()
+
+  const isOnboarding = location.pathname === '/onboarding'
+
+  if (isOnboarding) {
+
+    return <>{children}</>
+
+  }
+
+  return (
+
+    <div className="min-h-screen bg-[#0f0a1e]">
+
+      <Sidebar />
+
+      <main className="ml-[240px] p-8 transition-all">{children}</main>
+
+    </div>
+
+  )
+
+}
+
+function AppRoutes() {
+
+  return (
+
+    <AppLayout>
+
+      <Routes>
+
+        <Route path="/" element={<DashboardPage />} />
+
+        <Route path="/issues" element={<IssuesListPage />} />
+
+        <Route path="/issues/:id" element={<IssueDetailPage />} />
+
+        <Route path="/report" element={<MonthlyReportPage />} />
+
+        <Route path="/figma" element={<FigmaReviewPage />} />
+
+        <Route path="/github" element={<GitHubPRPage />} />
+
+        <Route path="/settings" element={<SettingsPage />} />
+
+        <Route path="/onboarding" element={<OnboardingPage />} />
+
+      </Routes>
+
+    </AppLayout>
+
+  )
+
+}
+
+export function App() {
+
+  return (
+
+    <HashRouter>
+
+      <AppRoutes />
+
+    </HashRouter>
+
+  )
+
+}
+
+```
+
+```tailwind.config.js
+
+module.exports = {
+
+  darkMode: "selector",
+
+  theme: {
+
+    container: {
+
+      center: true,
+
+      padding: "2rem",
+
+      screens: {
+
+        "2xl": "1400px",
+
+      },
+
+    },
+
+    extend: {
+
+      colors: {
+
+        border: "hsl(var(--border))",
+
+        input: "hsl(var(--input))",
+
+        ring: "hsl(var(--ring))",
+
+        background: "hsl(var(--background))",
+
+        foreground: "hsl(var(--foreground))",
+
+        primary: {
+
+          DEFAULT: "hsl(var(--primary))",
+
+          foreground: "hsl(var(--primary-foreground))",
+
+        },
+
+        secondary: {
+
+          DEFAULT: "hsl(var(--secondary))",
+
+          foreground: "hsl(var(--secondary-foreground))",
+
+        },
+
+        destructive: {
+
+          DEFAULT: "hsl(var(--destructive))",
+
+          foreground: "hsl(var(--destructive-foreground))",
+
+        },
+
+        muted: {
+
+          DEFAULT: "hsl(var(--muted))",
+
+          foreground: "hsl(var(--muted-foreground))",
+
+        },
+
+        accent: {
+
+          DEFAULT: "hsl(var(--accent))",
+
+          foreground: "hsl(var(--accent-foreground))",
+
+        },
+
+        popover: {
+
+          DEFAULT: "hsl(var(--popover))",
+
+          foreground: "hsl(var(--popover-foreground))",
+
+        },
+
+        card: {
+
+          DEFAULT: "hsl(var(--card))",
+
+          foreground: "hsl(var(--card-foreground))",
+
+        },
+
+      },
+
+      borderRadius: {
+
+        lg: "var(--radius)",
+
+        md: "calc(var(--radius) - 2px)",
+
+        sm: "calc(var(--radius) - 4px)",
+
+      },
+
+      keyframes: {
+
+        "caret-blink": {
+
+          "0%,70%,100%": { opacity: "1" },
+
+          "20%,50%": { opacity: "0" },
+
+        },
+
+        "accordion-down": {
+
+          from: { height: 0 },
+
+          to: { height: "var(--radix-accordion-content-height)" },
+
+        },
+
+        "accordion-up": {
+
+          from: { height: "var(--radix-accordion-content-height)" },
+
+          to: { height: 0 },
+
+        },
+
+      },
+
+      animation: {
+
+        "accordion-down": "accordion-down 0.2s ease-out",
+
+        "accordion-up": "accordion-up 0.2s ease-out",
+
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
+
+      },
+
+    },
+
+  },
+
+}
+
+```
+
+```index.css
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+@layer base {
+
+  :root {
+
+    /* SynapseFlow Deep Space Purple Theme */
+
+    --sf-base: #0f0a1e;
+
+    --sf-card: #1a1333;
+
+    --sf-elevated: #2d1f5e;
+
+    --sf-sidebar: #150e2b;
+
+    --sf-magenta: #e91e8c;
+
+    --sf-violet: #7c3aed;
+
+    --sf-success: #22c55e;
+
+    --sf-warning: #f59e0b;
+
+    --sf-error: #ef4444;
+
+    --sf-border: rgba(124, 58, 237, 0.2);
+
+    --sf-border-hover: rgba(124, 58, 237, 0.4);
+
+    --sf-glow: rgba(124, 58, 237, 0.15);
+
+    --sf-glow-magenta: rgba(233, 30, 140, 0.3);
+
+    
+
+    /* Text colors */
+
+    --sf-text-primary: #e2dff0;
+
+    --sf-text-secondary: #9b8fc2;
+
+    --sf-text-tertiary: #6b5f8a;
+
+    /* Shadcn variables mapped to SynapseFlow theme */
+
+    --background: 270 50% 8%;
+
+    --foreground: 270 20% 92%;
+
+    --muted: 270 30% 15%;
+
+    --muted-foreground: 270 20% 60%;
+
+    --popover: 270 40% 10%;
+
+    --popover-foreground: 270 20% 92%;
+
+    --border: 270 50% 20%;
+
+    --input: 270 50% 20%;
+
+    --card: 270 40% 12%;
+
+    --card-foreground: 270 20% 92%;
+
+    --primary: 320 85% 52%;
+
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 263 70% 50%;
+
+    --secondary-foreground: 0 0% 100%;
+
+    --accent: 270 40% 20%;
+
+    --accent-foreground: 270 20% 92%;
+
+    --destructive: 320 85% 52%;
+
+    --destructive-foreground: 0 0% 100%;
+
+    --ring: 263 70% 50%;
+
+    --radius: 0.5rem;
+
+  }
+
+}
+
+@layer base {
+
+  * {
+
+    @apply border-border;
+
+  }
+
+  
+
+  body {
+
+    @apply bg-[#0f0a1e] text-[#e2dff0];
+
+    font-family: 'Inter', system-ui, sans-serif;
+
+    font-feature-settings: "rlig" 1, "calt" 1;
+
+  }
+
+  /* Custom scrollbar for the cosmic theme */
+
+  ::-webkit-scrollbar {
+
+    width: 8px;
+
+    height: 8px;
+
+  }
+
+  ::-webkit-scrollbar-track {
+
+    background: #0f0a1e;
+
+  }
+
+  ::-webkit-scrollbar-thumb {
+
+    background: #2d1f5e;
+
+    border-radius: 4px;
+
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+
+    background: #7c3aed;
+
+  }
+
+}
+
+@layer components {
+
+  .sf-card {
+
+    background: #1a1333;
+
+    border: 1px solid rgba(124, 58, 237, 0.2);
+
+    border-radius: 0.75rem;
+
+    transition: all 0.2s ease;
+
+  }
+
+  .sf-card:hover {
+
+    border-color: rgba(124, 58, 237, 0.4);
+
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.15);
+
+  }
+
+  .sf-elevated {
+
+    background: #2d1f5e;
+
+  }
+
+  .sf-glow-magenta {
+
+    box-shadow: 0 0 30px rgba(233, 30, 140, 0.3);
+
+  }
+
+  .sf-glow-violet {
+
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.3);
+
+  }
+
+  .sf-gradient-text {
+
+    background: linear-gradient(135deg, #e91e8c 0%, #7c3aed 100%);
+
+    -webkit-background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+
+    background-clip: text;
+
+  }
+
+  .sf-gradient-bg {
+
+    background: linear-gradient(135deg, #e91e8c 0%, #7c3aed 100%);
+
+  }
+
+  .sf-gradient-border {
+
+    position: relative;
+
+  }
+
+  .sf-gradient-border::before {
+
+    content: '';
+
+    position: absolute;
+
+    inset: 0;
+
+    padding: 1px;
+
+    border-radius: inherit;
+
+    background: linear-gradient(135deg, #e91e8c 0%, #7c3aed 100%);
+
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+
+    -webkit-mask-composite: xor;
+
+    mask-composite: exclude;
+
+  }
+
+  /* Button variants */
+
+  .sf-btn-primary {
+
+    @apply px-4 py-2 rounded-lg font-medium transition-all;
+
+    background: linear-gradient(135deg, #e91e8c 0%, #7c3aed 100%);
+
+    color: white;
+
+  }
+
+  .sf-btn-primary:hover {
+
+    box-shadow: 0 0 20px rgba(233, 30, 140, 0.4);
+
+    transform: translateY(-1px);
+
+  }
+
+  .sf-btn-secondary {
+
+    @apply px-4 py-2 rounded-lg font-medium transition-all;
+
+    background: #2d1f5e;
+
+    color: #e2dff0;
+
+    border: 1px solid rgba(124, 58, 237, 0.3);
+
+  }
+
+  .sf-btn-secondary:hover {
+
+    background: #3d2f7e;
+
+    border-color: rgba(124, 58, 237, 0.5);
+
+  }
+
+  .sf-btn-ghost {
+
+    @apply px-4 py-2 rounded-lg font-medium transition-all;
+
+    background: transparent;
+
+    color: #9b8fc2;
+
+  }
+
+  .sf-btn-ghost:hover {
+
+    background: rgba(124, 58, 237, 0.1);
+
+    color: #e2dff0;
+
+  }
+
+  /* Input styles */
+
+  .sf-input {
+
+    @apply w-full px-4 py-2 rounded-lg transition-all outline-none;
+
+    background: #1a1333;
+
+    border: 1px solid rgba(124, 58, 237, 0.2);
+
+    color: #e2dff0;
+
+  }
+
+  .sf-input:focus {
+
+    border-color: #7c3aed;
+
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+
+  }
+
+  .sf-input::placeholder {
+
+    color: #6b5f8a;
+
+  }
+
+  /* Badge styles */
+
+  .sf-badge {
+
+    @apply px-2 py-0.5 rounded-full text-xs font-medium;
+
+  }
+
+  .sf-badge-critical {
+
+    background: rgba(233, 30, 140, 0.2);
+
+    color: #e91e8c;
+
+  }
+
+  .sf-badge-high {
+
+    background: rgba(249, 115, 22, 0.2);
+
+    color: #f97316;
+
+  }
+
+  .sf-badge-medium {
+
+    background: rgba(245, 158, 11, 0.2);
+
+    color: #f59e0b;
+
+  }
+
+  .sf-badge-low {
+
+    background: rgba(34, 197, 94, 0.2);
+
+    color: #22c55e;
+
+  }
+
+  .sf-badge-info {
+
+    background: rgba(124, 58, 237, 0.2);
+
+    color: #7c3aed;
+
+  }
+
+}
+
+@layer utilities {
+
+  .animate-pulse-glow {
+
+    animation: pulse-glow 2s ease-in-out infinite;
+
+  }
+
+  @keyframes pulse-glow {
+
+    0%, 100% {
+
+      box-shadow: 0 0 20px rgba(233, 30, 140, 0.3);
+
+    }
+
+    50% {
+
+      box-shadow: 0 0 40px rgba(233, 30, 140, 0.5);
+
+    }
+
+  }
+
+}
+
+```
+
+```components/ui/Card.tsx
+
+import React from 'react'
+
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+
+  noPadding?: boolean
+
+}
+
+export function Card({
+
+  className = '',
+
+  children,
+
+  noPadding = false,
+
+  ...props
+
+}: CardProps) {
+
+  return (
+
+    <div
+
+      className={`bg-[#1a1333] border border-[#7c3aed]/20 rounded-xl shadow-lg hover:shadow-[0_0_15px_rgba(124,58,237,0.15)] transition-all duration-300 ${className}`}
+
+      {...props}
+
+    >
+
+      <div className={noPadding ? '' : 'p-6'}>{children}</div>
+
+    </div>
+
+  )
+
+}
+
+```
+
+```components/ui/Button.tsx
+
+import React from 'react'
+
+import { Loader2 } from 'lucide-react'
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger'
+
+  size?: 'sm' | 'md' | 'lg'
+
+  isLoading?: boolean
+
+}
+
+export function Button({
+
+  children,
+
+  variant = 'primary',
+
+  size = 'md',
+
+  isLoading = false,
+
+  className = '',
+
+  disabled,
+
+  ...props
+
+}: ButtonProps) {
+
+  const baseStyles =
+
+    'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0f0a1e] disabled:opacity-50 disabled:cursor-not-allowed'
+
+  const variants = {
+
+    primary:
+
+      'bg-[#e91e8c] hover:bg-[#d81b81] text-white shadow-[0_0_10px_rgba(233,30,140,0.3)] hover:shadow-[0_0_15px_rgba(233,30,140,0.5)] border border-transparent',
+
+    secondary:
+
+      'bg-[#7c3aed] hover:bg-[#6d28d9] text-white shadow-[0_0_10px_rgba(124,58,237,0.3)] hover:shadow-[0_0_15px_rgba(124,58,237,0.5)] border border-transparent',
+
+    outline:
+
+      'bg-transparent border border-[#7c3aed]/50 text-[#e2dff0] hover:bg-[#7c3aed]/10 hover:border-[#7c3aed]',
+
+    ghost:
+
+      'bg-transparent text-[#9b8fc2] hover:text-[#e2dff0] hover:bg-[#7c3aed]/10',
+
+    danger:
+
+      'bg-red-500/10 text-red-400 border border-red-500/50 hover:bg-red-500/20',
+
+  }
+
+  const sizes = {
+
+    sm: 'h-8 px-3 text-xs',
+
+    md: 'h-10 px-4 py-2 text-sm',
+
+    lg: 'h-12 px-6 text-base',
+
+  }
+
+  return (
+
+    <button
+
+      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+
+      disabled={disabled || isLoading}
+
+      {...props}
+
+    >
+
+      {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+
+      {children}
+
+    </button>
+
+  )
+
+}
+
+```
+
+```components/ui/Badge.tsx
+
+import React from 'react'
+
+interface BadgeProps {
+
+  children: React.ReactNode
+
+  variant?: 'default' | 'success' | 'warning' | 'danger' | 'neutral'
+
+  className?: string
+
+}
+
+export function Badge({
+
+  children,
+
+  variant = 'default',
+
+  className = '',
+
+}: BadgeProps) {
+
+  const variants = {
+
+    default: 'bg-[#7c3aed]/20 text-[#a78bfa] border-[#7c3aed]/30',
+
+    success: 'bg-[#22c55e]/20 text-[#4ade80] border-[#22c55e]/30',
+
+    warning: 'bg-[#f59e0b]/20 text-[#fbbf24] border-[#f59e0b]/30',
+
+    danger: 'bg-[#e91e8c]/20 text-[#f472b6] border-[#e91e8c]/30',
+
+    neutral: 'bg-gray-500/20 text-gray-400 border-gray-500/30',
+
+  }
+
+  return (
+
+    <span
+
+      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${variants[variant]} ${className}`}
+
+    >
+
+      {children}
+
+    </span>
+
+  )
+
+}
+
+```
+
+```components/Sidebar.tsx
+
+import React, { useState } from 'react'
+
+import { NavLink, useLocation } from 'react-router-dom'
+
+import {
+
+  LayoutDashboardIcon,
+
+  AlertCircleIcon,
+
+  FileTextIcon,
+
+  FigmaIcon,
+
+  GitPullRequestIcon,
+
+  SettingsIcon,
+
+  ZapIcon,
+
+  LogOutIcon,
+
+  ChevronLeftIcon,
+
+  ChevronRightIcon,
+
+} from 'lucide-react'
+
+type NavItem = {
+
+  name: string
+
+  path: string
+
+  icon: React.ReactNode
+
+}
+
+const navItems: NavItem[] = [
+
+  {
+
+    name: 'Dashboard',
+
+    path: '/',
+
+    icon: <LayoutDashboardIcon className="w-5 h-5" />,
+
+  },
+
+  {
+
+    name: 'Issues',
+
+    path: '/issues',
+
+    icon: <AlertCircleIcon className="w-5 h-5" />,
+
+  },
+
+  {
+
+    name: 'Monthly Report',
+
+    path: '/report',
+
+    icon: <FileTextIcon className="w-5 h-5" />,
+
+  },
+
+  {
+
+    name: 'Figma Review',
+
+    path: '/figma',
+
+    icon: <FigmaIcon className="w-5 h-5" />,
+
+  },
+
+  {
+
+    name: 'GitHub PR',
+
+    path: '/github',
+
+    icon: <GitPullRequestIcon className="w-5 h-5" />,
+
+  },
+
+  {
+
+    name: 'Settings',
+
+    path: '/settings',
+
+    icon: <SettingsIcon className="w-5 h-5" />,
+
+  },
+
+]
+
+export function Sidebar() {
+
+  const [collapsed, setCollapsed] = useState(false)
+
+  const location = useLocation()
+
+  return (
+
+    <aside
+
+      className={`fixed left-0 top-0 h-screen bg-[#150e2b] border-r border-[rgba(124,58,237,0.2)] flex flex-col transition-all duration-300 z-50 ${collapsed ? 'w-[72px]' : 'w-[240px]'}`}
+
+    >
+
+      {/* Logo */}
+
+      <div className="p-4 flex items-center gap-3 border-b border-[rgba(124,58,237,0.2)]">
+
+        <div className="w-10 h-10 rounded-xl sf-gradient-bg flex items-center justify-center sf-glow-magenta">
+
+          <ZapIcon className="w-6 h-6 text-white" />
+
+        </div>
+
+        {!collapsed && (
+
+          <span className="text-xl font-bold sf-gradient-text">
+
+            SynapseFlow
+
+          </span>
+
+        )}
+
+      </div>
+
+      {/* Navigation */}
+
+      <nav className="flex-1 py-4 px-2 space-y-1 overflow-y-auto">
+
+        {navItems.map((item) => {
+
+          const isActive =
+
+            item.path === '/'
+
+              ? location.pathname === '/'
+
+              : location.pathname.startsWith(item.path)
+
+          return (
+
+            <NavLink
+
+              key={item.path}
+
+              to={item.path}
+
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group ${isActive ? 'bg-[#7c3aed]/20 text-[#e2dff0] border border-[#7c3aed]/40' : 'text-[#9b8fc2] hover:bg-[#7c3aed]/10 hover:text-[#e2dff0] border border-transparent'}`}
+
+            >
+
+              <span
+
+                className={`flex-shrink-0 ${isActive ? 'text-[#7c3aed]' : 'group-hover:text-[#7c3aed]'}`}
+
+              >
+
+                {item.icon}
+
+              </span>
+
+              {!collapsed && (
+
+                <span className="font-medium truncate">{item.name}</span>
+
+              )}
+
+              {isActive && !collapsed && (
+
+                <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#7c3aed]" />
+
+              )}
+
+            </NavLink>
+
+          )
+
+        })}
+
+      </nav>
+
+      {/* Collapse toggle */}
+
+      <button
+
+        onClick={() => setCollapsed(!collapsed)}
+
+        className="absolute -right-3 top-20 w-6 h-6 rounded-full bg-[#2d1f5e] border border-[rgba(124,58,237,0.3)] flex items-center justify-center text-[#9b8fc2] hover:text-[#e2dff0] hover:border-[#7c3aed] transition-all"
+
+      >
+
+        {collapsed ? (
+
+          <ChevronRightIcon className="w-4 h-4" />
+
+        ) : (
+
+          <ChevronLeftIcon className="w-4 h-4" />
+
+        )}
+
+      </button>
+
+      {/* User section */}
+
+      <div className="p-4 border-t border-[rgba(124,58,237,0.2)]">
+
+        <div
+
+          className={`flex items-center gap-3 ${collapsed ? 'justify-center' : ''}`}
+
+        >
+
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#e91e8c] to-[#7c3aed] flex items-center justify-center text-white font-semibold text-sm">
+
+            JD
+
+          </div>
+
+          {!collapsed && (
+
+            <div className="flex-1 min-w-0">
+
+              <p className="text-sm font-medium text-[#e2dff0] truncate">
+
+                John Doe
+
+              </p>
+
+              <p className="text-xs text-[#6b5f8a] truncate">
+
+                john@synapseflow.io
+
+              </p>
+
+            </div>
+
+          )}
+
+          {!collapsed && (
+
+            <button className="p-1.5 rounded-lg text-[#6b5f8a] hover:text-[#e2dff0] hover:bg-[#7c3aed]/10 transition-all">
+
+              <LogOutIcon className="w-4 h-4" />
+
+            </button>
+
+          )}
+
+        </div>
+
+      </div>
+
+    </aside>
+
+  )
+
+}
+
+```
+
+```components/Layout.tsx
+
+import React from 'react'
+
+import { Sidebar } from './Sidebar'
+
+import { useLocation } from 'react-router-dom'
+
+interface LayoutProps {
+
+  children: React.ReactNode
+
+}
+
+export function Layout({ children }: LayoutProps) {
+
+  const location = useLocation()
+
+  const isOnboarding = location.pathname === '/onboarding'
+
+  if (isOnboarding) {
+
+    return (
+
+      <div className="min-h-screen bg-[#0f0a1e] text-[#e2dff0]">{children}</div>
+
+    )
+
+  }
+
+  return (
+
+    <div className="min-h-screen bg-[#0f0a1e] text-[#e2dff0] flex">
+
+      <Sidebar />
+
+      <main className="flex-1 ml-64 min-h-screen transition-all duration-300">
+
+        <div className="p-8 max-w-7xl mx-auto">{children}</div>
+
+      </main>
+
+    </div>
+
+  )
+
+}
+
+```
+
+```pages/DashboardPage.tsx
+
+import React, { useState } from 'react'
+
+import {
+
+  XIcon,
+
+  AlertTriangleIcon,
+
+  TrendingUpIcon,
+
+  TrendingDownIcon,
+
+  ActivityIcon,
+
+  UsersIcon,
+
+  ClockIcon,
+
+  ZapIcon,
+
+  ChevronRightIcon,
+
+  CalendarIcon,
+
+} from 'lucide-react'
+
+import {
+
+  AreaChart,
+
+  Area,
+
+  ResponsiveContainer,
+
+  BarChart,
+
+  Bar,
+
+  XAxis,
+
+  YAxis,
+
+  Tooltip,
+
+} from 'recharts'
+
+import { Link } from 'react-router-dom'
+
+// Sparkline data for metric cards
+
+const eventsSparkline = [
+
+  {
+
+    value: 800,
+
+  },
+
+  {
+
+    value: 920,
+
+  },
+
+  {
+
+    value: 850,
+
+  },
+
+  {
+
+    value: 1100,
+
+  },
+
+  {
+
+    value: 980,
+
+  },
+
+  {
+
+    value: 1050,
+
+  },
+
+  {
+
+    value: 1200,
+
+  },
+
+  {
+
+    value: 1150,
+
+  },
+
+  {
+
+    value: 1180,
+
+  },
+
+  {
+
+    value: 1200,
+
+  },
+
+]
+
+const errorSparkline = [
+
+  {
+
+    value: 4.2,
+
+  },
+
+  {
+
+    value: 3.8,
+
+  },
+
+  {
+
+    value: 4.0,
+
+  },
+
+  {
+
+    value: 3.5,
+
+  },
+
+  {
+
+    value: 3.3,
+
+  },
+
+  {
+
+    value: 3.6,
+
+  },
+
+  {
+
+    value: 3.4,
+
+  },
+
+  {
+
+    value: 3.2,
+
+  },
+
+  {
+
+    value: 3.1,
+
+  },
+
+  {
+
+    value: 3.2,
+
+  },
+
+]
+
+const latencySparkline = [
+
+  {
+
+    value: 220,
+
+  },
+
+  {
+
+    value: 235,
+
+  },
+
+  {
+
+    value: 228,
+
+  },
+
+  {
+
+    value: 240,
+
+  },
+
+  {
+
+    value: 238,
+
+  },
+
+  {
+
+    value: 242,
+
+  },
+
+  {
+
+    value: 250,
+
+  },
+
+  {
+
+    value: 248,
+
+  },
+
+  {
+
+    value: 245,
+
+  },
+
+  {
+
+    value: 245,
+
+  },
+
+]
+
+const usersSparkline = [
+
+  {
+
+    value: 42,
+
+  },
+
+  {
+
+    value: 44,
+
+  },
+
+  {
+
+    value: 43,
+
+  },
+
+  {
+
+    value: 45,
+
+  },
+
+  {
+
+    value: 46,
+
+  },
+
+  {
+
+    value: 45,
+
+  },
+
+  {
+
+    value: 47,
+
+  },
+
+  {
+
+    value: 48,
+
+  },
+
+  {
+
+    value: 47,
+
+  },
+
+  {
+
+    value: 48.2,
+
+  },
+
+]
+
+// Funnel data
+
+const funnelData = [
+
+  {
+
+    name: 'Page View',
+
+    value: 125000,
+
+    percent: 100,
+
+  },
+
+  {
+
+    name: 'Sign Up Click',
+
+    value: 45000,
+
+    percent: 36,
+
+  },
+
+  {
+
+    name: 'Form Started',
+
+    value: 28000,
+
+    percent: 22.4,
+
+  },
+
+  {
+
+    name: 'Form Completed',
+
+    value: 12500,
+
+    percent: 10,
+
+  },
+
+  {
+
+    name: 'Converted',
+
+    value: 8200,
+
+    percent: 6.6,
+
+  },
+
+]
+
+// Recent issues
+
+const recentIssues = [
+
+  {
+
+    id: 'ISS-1234',
+
+    title: 'TypeError: Cannot read property "map" of undefined',
+
+    severity: 'critical',
+
+    events: 2847,
+
+    lastSeen: '2 min ago',
+
+    assignee: {
+
+      name: 'Sarah Chen',
+
+      initials: 'SC',
+
+    },
+
+  },
+
+  {
+
+    id: 'ISS-1233',
+
+    title: 'API timeout on /api/checkout endpoint',
+
+    severity: 'high',
+
+    events: 1523,
+
+    lastSeen: '15 min ago',
+
+    assignee: {
+
+      name: 'Mike Ross',
+
+      initials: 'MR',
+
+    },
+
+  },
+
+  {
+
+    id: 'ISS-1232',
+
+    title: 'Memory leak in WebSocket connection handler',
+
+    severity: 'high',
+
+    events: 892,
+
+    lastSeen: '1 hour ago',
+
+    assignee: {
+
+      name: 'Alex Kim',
+
+      initials: 'AK',
+
+    },
+
+  },
+
+  {
+
+    id: 'ISS-1231',
+
+    title: 'Slow database query on user dashboard',
+
+    severity: 'medium',
+
+    events: 456,
+
+    lastSeen: '2 hours ago',
+
+    assignee: {
+
+      name: 'John Doe',
+
+      initials: 'JD',
+
+    },
+
+  },
+
+  {
+
+    id: 'ISS-1230',
+
+    title: 'CSS layout shift on mobile navigation',
+
+    severity: 'low',
+
+    events: 234,
+
+    lastSeen: '4 hours ago',
+
+    assignee: {
+
+      name: 'Emma Wilson',
+
+      initials: 'EW',
+
+    },
+
+  },
+
+]
+
+type MetricCardProps = {
+
+  title: string
+
+  value: string
+
+  change: string
+
+  isPositive: boolean
+
+  icon: React.ReactNode
+
+  sparklineData: {
+
+    value: number
+
+  }[]
+
+  sparklineColor: string
+
+}
+
+function MetricCard({
+
+  title,
+
+  value,
+
+  change,
+
+  isPositive,
+
+  icon,
+
+  sparklineData,
+
+  sparklineColor,
+
+}: MetricCardProps) {
+
+  return (
+
+    <div className="sf-card p-5">
+
+      <div className="flex items-start justify-between mb-4">
+
+        <div>
+
+          <p className="text-[#9b8fc2] text-sm font-medium mb-1">{title}</p>
+
+          <p className="text-3xl font-bold text-[#e2dff0]">{value}</p>
+
+        </div>
+
+        <div className="w-10 h-10 rounded-lg bg-[#2d1f5e] flex items-center justify-center text-[#7c3aed]">
+
+          {icon}
+
+        </div>
+
+      </div>
+
+      <div className="flex items-center justify-between">
+
+        <div
+
+          className={`flex items-center gap-1 text-sm font-medium ${isPositive ? 'text-[#22c55e]' : 'text-[#e91e8c]'}`}
+
+        >
+
+          {isPositive ? (
+
+            <TrendingUpIcon className="w-4 h-4" />
+
+          ) : (
+
+            <TrendingDownIcon className="w-4 h-4" />
+
+          )}
+
+          {change}
+
+        </div>
+
+        <div className="w-24 h-8">
+
+          <ResponsiveContainer width="100%" height="100%">
+
+            <AreaChart data={sparklineData}>
+
+              <defs>
+
+                <linearGradient
+
+                  id={`gradient-${title}`}
+
+                  x1="0"
+
+                  y1="0"
+
+                  x2="0"
+
+                  y2="1"
+
+                >
+
+                  <stop
+
+                    offset="0%"
+
+                    stopColor={sparklineColor}
+
+                    stopOpacity={0.4}
+
+                  />
+
+                  <stop
+
+                    offset="100%"
+
+                    stopColor={sparklineColor}
+
+                    stopOpacity={0}
+
+                  />
+
+                </linearGradient>
+
+              </defs>
+
+              <Area
+
+                type="monotone"
+
+                dataKey="value"
+
+                stroke={sparklineColor}
+
+                strokeWidth={2}
+
+                fill={`url(#gradient-${title})`}
+
+              />
+
+            </AreaChart>
+
+          </ResponsiveContainer>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+function SeverityBadge({ severity }: { severity: string }) {
+
+  const styles: Record<string, string> = {
+
+    critical: 'sf-badge-critical',
+
+    high: 'sf-badge-high',
+
+    medium: 'sf-badge-medium',
+
+    low: 'sf-badge-low',
+
+  }
+
+  return (
+
+    <span className={`sf-badge ${styles[severity] || 'sf-badge-info'}`}>
+
+      {severity.charAt(0).toUpperCase() + severity.slice(1)}
+
+    </span>
+
+  )
+
+}
+
+export function DashboardPage() {
+
+  const [showAlert, setShowAlert] = useState(true)
+
+  return (
+
+    <div className="min-h-screen">
+
+      {/* Critical Alert Banner */}
+
+      {showAlert && (
+
+        <div className="bg-gradient-to-r from-[#e91e8c]/20 to-[#7c3aed]/20 border border-[#e91e8c]/40 rounded-xl p-4 mb-6 animate-pulse-glow">
+
+          <div className="flex items-center justify-between">
+
+            <div className="flex items-center gap-3">
+
+              <div className="w-10 h-10 rounded-lg bg-[#e91e8c]/20 flex items-center justify-center">
+
+                <AlertTriangleIcon className="w-5 h-5 text-[#e91e8c]" />
+
+              </div>
+
+              <div>
+
+                <p className="font-semibold text-[#e2dff0]">
+
+                  Critical: Conversion rate dropped 23% in the last 24 hours
+
+                </p>
+
+                <p className="text-sm text-[#9b8fc2]">
+
+                  Investigate the checkout funnel for potential issues
+
+                </p>
+
+              </div>
+
+            </div>
+
+            <div className="flex items-center gap-3">
+
+              <Link to="/issues/ISS-1234" className="sf-btn-primary text-sm">
+
+                View Details
+
+              </Link>
+
+              <button
+
+                onClick={() => setShowAlert(false)}
+
+                className="p-2 rounded-lg text-[#9b8fc2] hover:text-[#e2dff0] hover:bg-[#7c3aed]/10 transition-all"
+
+              >
+
+                <XIcon className="w-5 h-5" />
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
+      {/* Header */}
+
+      <div className="flex items-center justify-between mb-8">
+
+        <div>
+
+          <h1 className="text-3xl font-bold text-[#e2dff0] mb-1">Dashboard</h1>
+
+          <p className="text-[#9b8fc2]">
+
+            Monitor your application health and performance
+
+          </p>
+
+        </div>
+
+        <button className="sf-btn-secondary flex items-center gap-2">
+
+          <CalendarIcon className="w-4 h-4" />
+
+          Last 24 hours
+
+          <ChevronRightIcon className="w-4 h-4" />
+
+        </button>
+
+      </div>
+
+      {/* Metric Cards */}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+
+        <MetricCard
+
+          title="Total Events"
+
+          value="1.2M"
+
+          change="+12.5%"
+
+          isPositive={true}
+
+          icon={<ActivityIcon className="w-5 h-5" />}
+
+          sparklineData={eventsSparkline}
+
+          sparklineColor="#7c3aed"
+
+        />
+
+        <MetricCard
+
+          title="Error Rate"
+
+          value="3.2%"
+
+          change="-0.8%"
+
+          isPositive={true}
+
+          icon={<AlertTriangleIcon className="w-5 h-5" />}
+
+          sparklineData={errorSparkline}
+
+          sparklineColor="#22c55e"
+
+        />
+
+        <MetricCard
+
+          title="P95 Latency"
+
+          value="245ms"
+
+          change="+18ms"
+
+          isPositive={false}
+
+          icon={<ClockIcon className="w-5 h-5" />}
+
+          sparklineData={latencySparkline}
+
+          sparklineColor="#e91e8c"
+
+        />
+
+        <MetricCard
+
+          title="Active Users"
+
+          value="48.2K"
+
+          change="+5.3%"
+
+          isPositive={true}
+
+          icon={<UsersIcon className="w-5 h-5" />}
+
+          sparklineData={usersSparkline}
+
+          sparklineColor="#7c3aed"
+
+        />
+
+      </div>
+
+      {/* Funnel and Issues Grid */}
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        {/* Conversion Funnel */}
+
+        <div className="sf-card p-6">
+
+          <div className="flex items-center justify-between mb-6">
+
+            <div>
+
+              <h2 className="text-xl font-semibold text-[#e2dff0]">
+
+                Conversion Funnel
+
+              </h2>
+
+              <p className="text-sm text-[#9b8fc2]">
+
+                User journey through checkout
+
+              </p>
+
+            </div>
+
+            <button className="sf-btn-ghost text-sm">View Details</button>
+
+          </div>
+
+          <div className="space-y-4">
+
+            {funnelData.map((step, index) => (
+
+              <div key={step.name} className="relative">
+
+                <div className="flex items-center justify-between mb-2">
+
+                  <span className="text-sm font-medium text-[#e2dff0]">
+
+                    {step.name}
+
+                  </span>
+
+                  <div className="flex items-center gap-3">
+
+                    <span className="text-sm text-[#9b8fc2]">
+
+                      {step.value.toLocaleString()}
+
+                    </span>
+
+                    <span className="text-sm font-semibold text-[#7c3aed]">
+
+                      {step.percent}%
+
+                    </span>
+
+                  </div>
+
+                </div>
+
+                <div className="h-8 bg-[#0f0a1e] rounded-lg overflow-hidden">
+
+                  <div
+
+                    className="h-full rounded-lg transition-all duration-500"
+
+                    style={{
+
+                      width: `${step.percent}%`,
+
+                      background: `linear-gradient(90deg, #e91e8c ${100 - step.percent}%, #7c3aed 100%)`,
+
+                    }}
+
+                  />
+
+                </div>
+
+                {index < funnelData.length - 1 && (
+
+                  <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 text-[#6b5f8a] text-xs">
+
+                    ↓{' '}
+
+                    {((funnelData[index + 1].value / step.value) * 100).toFixed(
+
+                      0,
+
+                    )}
+
+                    %
+
+                  </div>
+
+                )}
+
+              </div>
+
+            ))}
+
+          </div>
+
+        </div>
+
+        {/* Recent Issues */}
+
+        <div className="sf-card p-6">
+
+          <div className="flex items-center justify-between mb-6">
+
+            <div>
+
+              <h2 className="text-xl font-semibold text-[#e2dff0]">
+
+                Recent Issues
+
+              </h2>
+
+              <p className="text-sm text-[#9b8fc2]">
+
+                Latest errors and warnings
+
+              </p>
+
+            </div>
+
+            <Link to="/issues" className="sf-btn-ghost text-sm">
+
+              View All
+
+            </Link>
+
+          </div>
+
+          <div className="space-y-3">
+
+            {recentIssues.map((issue) => (
+
+              <Link
+
+                key={issue.id}
+
+                to={`/issues/${issue.id}`}
+
+                className="block p-3 rounded-lg bg-[#0f0a1e] hover:bg-[#2d1f5e]/30 border border-transparent hover:border-[rgba(124,58,237,0.3)] transition-all group"
+
+              >
+
+                <div className="flex items-start justify-between gap-3">
+
+                  <div className="flex-1 min-w-0">
+
+                    <div className="flex items-center gap-2 mb-1">
+
+                      <span className="text-xs text-[#6b5f8a] font-mono">
+
+                        {issue.id}
+
+                      </span>
+
+                      <SeverityBadge severity={issue.severity} />
+
+                    </div>
+
+                    <p className="text-sm text-[#e2dff0] truncate group-hover:text-[#7c3aed] transition-colors">
+
+                      {issue.title}
+
+                    </p>
+
+                    <div className="flex items-center gap-4 mt-2 text-xs text-[#6b5f8a]">
+
+                      <span>{issue.events.toLocaleString()} events</span>
+
+                      <span>{issue.lastSeen}</span>
+
+                    </div>
+
+                  </div>
+
+                  <div className="flex items-center gap-2">
+
+                    <div
+
+                      className="w-7 h-7 rounded-full bg-gradient-to-br from-[#e91e8c] to-[#7c3aed] flex items-center justify-center text-white text-xs font-medium"
+
+                      title={issue.assignee.name}
+
+                    >
+
+                      {issue.assignee.initials}
+
+                    </div>
+
+                    <ChevronRightIcon className="w-4 h-4 text-[#6b5f8a] group-hover:text-[#7c3aed] transition-colors" />
+
+                  </div>
+
+                </div>
+
+              </Link>
+
+            ))}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+```
+
+```pages/IssuesListPage.tsx
+
+import React, { useState } from 'react'
+
+import { Link } from 'react-router-dom'
+
+import {
+
+  SearchIcon,
+
+  FilterIcon,
+
+  ChevronDownIcon,
+
+  ChevronLeftIcon,
+
+  ChevronRightIcon,
+
+  CheckIcon,
+
+  AlertCircleIcon,
+
+  AlertTriangleIcon,
+
+  InfoIcon,
+
+  CheckCircleIcon,
+
+  MoreHorizontalIcon,
+
+} from 'lucide-react'
+
+type Issue = {
+
+  id: string
+
+  title: string
+
+  status: 'open' | 'investigating' | 'resolved' | 'ignored'
+
+  priority: 'critical' | 'high' | 'medium' | 'low'
+
+  events: number
+
+  users: number
+
+  lastSeen: string
+
+  firstSeen: string
+
+  assignee: {
+
+    name: string
+
+    initials: string
+
+  } | null
+
+  selected?: boolean
+
+}
+
+const mockIssues: Issue[] = [
+
+  {
+
+    id: 'ISS-1234',
+
+    title: 'TypeError: Cannot read property "map" of undefined',
+
+    status: 'open',
+
+    priority: 'critical',
+
+    events: 2847,
+
+    users: 1234,
+
+    lastSeen: '2 min ago',
+
+    firstSeen: '2 days ago',
+
+    assignee: {
+
+      name: 'Sarah Chen',
+
+      initials: 'SC',
+
+    },
+
+  },
+
+  {
+
+    id: 'ISS-1233',
+
+    title: 'API timeout on /api/checkout endpoint',
+
+    status: 'investigating',
+
+    priority: 'high',
+
+    events: 1523,
+
+    users: 892,
+
+    lastSeen: '15 min ago',
+
+    firstSeen: '1 day ago',
+
+    assignee: {
+
+      name: 'Mike Ross',
+
+      initials: 'MR',
+
+    },
+
+  },
+
+  {
+
+    id: 'ISS-1232',
+
+    title: 'Memory leak in WebSocket connection handler',
+
+    status: 'open',
+
+    priority: 'high',
+
+    events: 892,
+
+    users: 456,
+
+    lastSeen: '1 hour ago',
+
+    firstSeen: '3 days ago',
+
+    assignee: {
+
+      name: 'Alex Kim',
+
+      initials: 'AK',
+
+    },
+
+  },
+
+  {
+
+    id: 'ISS-1231',
+
+    title: 'Slow database query on user dashboard',
+
+    status: 'investigating',
+
+    priority: 'medium',
+
+    events: 456,
+
+    users: 234,
+
+    lastSeen: '2 hours ago',
+
+    firstSeen: '5 days ago',
+
+    assignee: {
+
+      name: 'John Doe',
+
+      initials: 'JD',
+
+    },
+
+  },
+
+  {
+
+    id: 'ISS-1230',
+
+    title: 'CSS layout shift on mobile navigation',
+
+    status: 'open',
+
+    priority: 'low',
+
+    events: 234,
+
+    users: 156,
+
+    lastSeen: '4 hours ago',
+
+    firstSeen: '1 week ago',
+
+    assignee: {
+
+      name: 'Emma Wilson',
+
+      initials: 'EW',
+
+    },
+
+  },
+
+  {
+
+    id: 'ISS-1229',
+
+    title: 'Unhandled promise rejection in auth flow',
+
+    status: 'resolved',
+
+    priority: 'critical',
+
+    events: 5621,
+
+    users: 2341,
+
+    lastSeen: '1 day ago',
+
+    firstSeen: '2 weeks ago',
+
+    assignee: {
+
+      name: 'Sarah Chen',
+
+      initials: 'SC',
+
+    },
+
+  },
+
+  {
+
+    id: 'ISS-1228',
+
+    title: 'Rate limiting not working correctly',
+
+    status: 'open',
+
+    priority: 'high',
+
+    events: 789,
+
+    users: 345,
+
+    lastSeen: '3 hours ago',
+
+    firstSeen: '4 days ago',
+
+    assignee: null,
+
+  },
+
+  {
+
+    id: 'ISS-1227',
+
+    title: 'Image optimization failing for large files',
+
+    status: 'ignored',
+
+    priority: 'low',
+
+    events: 123,
+
+    users: 67,
+
+    lastSeen: '2 days ago',
+
+    firstSeen: '3 weeks ago',
+
+    assignee: {
+
+      name: 'Mike Ross',
+
+      initials: 'MR',
+
+    },
+
+  },
+
+  {
+
+    id: 'ISS-1226',
+
+    title: 'Session expiry not handled gracefully',
+
+    status: 'open',
+
+    priority: 'medium',
+
+    events: 567,
+
+    users: 289,
+
+    lastSeen: '5 hours ago',
+
+    firstSeen: '1 week ago',
+
+    assignee: {
+
+      name: 'Alex Kim',
+
+      initials: 'AK',
+
+    },
+
+  },
+
+  {
+
+    id: 'ISS-1225',
+
+    title: 'Search indexing delay causing stale results',
+
+    status: 'investigating',
+
+    priority: 'medium',
+
+    events: 345,
+
+    users: 178,
+
+    lastSeen: '6 hours ago',
+
+    firstSeen: '2 weeks ago',
+
+    assignee: {
+
+      name: 'John Doe',
+
+      initials: 'JD',
+
+    },
+
+  },
+
+]
+
+function StatusIcon({ status }: { status: Issue['status'] }) {
+
+  switch (status) {
+
+    case 'open':
+
+      return <AlertCircleIcon className="w-4 h-4 text-[#e91e8c]" />
+
+    case 'investigating':
+
+      return <AlertTriangleIcon className="w-4 h-4 text-[#f59e0b]" />
+
+    case 'resolved':
+
+      return <CheckCircleIcon className="w-4 h-4 text-[#22c55e]" />
+
+    case 'ignored':
+
+      return <InfoIcon className="w-4 h-4 text-[#6b5f8a]" />
+
+    default:
+
+      return null
+
+  }
+
+}
+
+function PriorityBadge({ priority }: { priority: Issue['priority'] }) {
+
+  const styles: Record<string, string> = {
+
+    critical: 'sf-badge-critical',
+
+    high: 'sf-badge-high',
+
+    medium: 'sf-badge-medium',
+
+    low: 'sf-badge-low',
+
+  }
+
+  return (
+
+    <span className={`sf-badge ${styles[priority]}`}>
+
+      {priority.charAt(0).toUpperCase() + priority.slice(1)}
+
+    </span>
+
+  )
+
+}
+
+function FilterDropdown({
+
+  label,
+
+  options,
+
+}: {
+
+  label: string
+
+  options: string[]
+
+}) {
+
+  const [isOpen, setIsOpen] = useState(false)
+
+  const [selected, setSelected] = useState<string | null>(null)
+
+  return (
+
+    <div className="relative">
+
+      <button
+
+        onClick={() => setIsOpen(!isOpen)}
+
+        className="sf-btn-secondary flex items-center gap-2 text-sm"
+
+      >
+
+        {selected || label}
+
+        <ChevronDownIcon className="w-4 h-4" />
+
+      </button>
+
+      {isOpen && (
+
+        <>
+
+          <div
+
+            className="fixed inset-0 z-10"
+
+            onClick={() => setIsOpen(false)}
+
+          />
+
+          <div className="absolute top-full left-0 mt-2 w-48 bg-[#1a1333] border border-[rgba(124,58,237,0.3)] rounded-lg shadow-xl z-20 py-1">
+
+            <button
+
+              onClick={() => {
+
+                setSelected(null)
+
+                setIsOpen(false)
+
+              }}
+
+              className="w-full px-4 py-2 text-left text-sm text-[#9b8fc2] hover:bg-[#7c3aed]/10 hover:text-[#e2dff0]"
+
+            >
+
+              All
+
+            </button>
+
+            {options.map((option) => (
+
+              <button
+
+                key={option}
+
+                onClick={() => {
+
+                  setSelected(option)
+
+                  setIsOpen(false)
+
+                }}
+
+                className="w-full px-4 py-2 text-left text-sm text-[#9b8fc2] hover:bg-[#7c3aed]/10 hover:text-[#e2dff0] flex items-center justify-between"
+
+              >
+
+                {option}
+
+                {selected === option && (
+
+                  <CheckIcon className="w-4 h-4 text-[#7c3aed]" />
+
+                )}
+
+              </button>
+
+            ))}
+
+          </div>
+
+        </>
+
+      )}
+
+    </div>
+
+  )
+
+}
+
+export function IssuesListPage() {
+
+  const [issues, setIssues] = useState(mockIssues)
+
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const [selectAll, setSelectAll] = useState(false)
+
+  const toggleSelectAll = () => {
+
+    setSelectAll(!selectAll)
+
+    setIssues(
+
+      issues.map((issue) => ({
+
+        ...issue,
+
+        selected: !selectAll,
+
+      })),
+
+    )
+
+  }
+
+  const toggleSelect = (id: string) => {
+
+    setIssues(
+
+      issues.map((issue) =>
+
+        issue.id === id
+
+          ? {
+
+              ...issue,
+
+              selected: !issue.selected,
+
+            }
+
+          : issue,
+
+      ),
+
+    )
+
+  }
+
+  const selectedCount = issues.filter((i) => i.selected).length
+
+  return (
+
+    <div className="min-h-screen">
+
+      {/* Header */}
+
+      <div className="flex items-center justify-between mb-6">
+
+        <div>
+
+          <h1 className="text-3xl font-bold text-[#e2dff0] mb-1">Issues</h1>
+
+          <p className="text-[#9b8fc2]">
+
+            Track and resolve errors across your application
+
+          </p>
+
+        </div>
+
+        <button className="sf-btn-primary">Create Issue</button>
+
+      </div>
+
+      {/* Filters and Search */}
+
+      <div className="sf-card p-4 mb-6">
+
+        <div className="flex flex-wrap items-center gap-4">
+
+          <div className="relative flex-1 min-w-[240px]">
+
+            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6b5f8a]" />
+
+            <input
+
+              type="text"
+
+              placeholder="Search issues..."
+
+              value={searchQuery}
+
+              onChange={(e) => setSearchQuery(e.target.value)}
+
+              className="sf-input pl-10"
+
+            />
+
+          </div>
+
+          <FilterDropdown
+
+            label="Status"
+
+            options={['Open', 'Investigating', 'Resolved', 'Ignored']}
+
+          />
+
+          <FilterDropdown
+
+            label="Priority"
+
+            options={['Critical', 'High', 'Medium', 'Low']}
+
+          />
+
+          <FilterDropdown
+
+            label="Assignee"
+
+            options={[
+
+              'Sarah Chen',
+
+              'Mike Ross',
+
+              'Alex Kim',
+
+              'John Doe',
+
+              'Emma Wilson',
+
+              'Unassigned',
+
+            ]}
+
+          />
+
+          <button className="sf-btn-ghost flex items-center gap-2 text-sm">
+
+            <FilterIcon className="w-4 h-4" />
+
+            More Filters
+
+          </button>
+
+        </div>
+
+      </div>
+
+      {/* Bulk Actions */}
+
+      {selectedCount > 0 && (
+
+        <div className="sf-card p-3 mb-4 flex items-center gap-4 bg-[#7c3aed]/10 border-[#7c3aed]/40">
+
+          <span className="text-sm text-[#e2dff0]">
+
+            {selectedCount} selected
+
+          </span>
+
+          <button className="sf-btn-secondary text-sm py-1.5">Resolve</button>
+
+          <button className="sf-btn-secondary text-sm py-1.5">Ignore</button>
+
+          <button className="sf-btn-secondary text-sm py-1.5">Assign</button>
+
+          <button className="sf-btn-ghost text-sm py-1.5 text-[#e91e8c]">
+
+            Delete
+
+          </button>
+
+        </div>
+
+      )}
+
+      {/* Issues Table */}
+
+      <div className="sf-card overflow-hidden">
+
+        <table className="w-full">
+
+          <thead>
+
+            <tr className="border-b border-[rgba(124,58,237,0.2)]">
+
+              <th className="p-4 text-left">
+
+                <button
+
+                  onClick={toggleSelectAll}
+
+                  className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${selectAll ? 'bg-[#7c3aed] border-[#7c3aed]' : 'border-[rgba(124,58,237,0.4)] hover:border-[#7c3aed]'}`}
+
+                >
+
+                  {selectAll && <CheckIcon className="w-3 h-3 text-white" />}
+
+                </button>
+
+              </th>
+
+              <th className="p-4 text-left text-xs font-semibold text-[#9b8fc2] uppercase tracking-wider">
+
+                Issue
+
+              </th>
+
+              <th className="p-4 text-left text-xs font-semibold text-[#9b8fc2] uppercase tracking-wider">
+
+                Priority
+
+              </th>
+
+              <th className="p-4 text-left text-xs font-semibold text-[#9b8fc2] uppercase tracking-wider">
+
+                Events
+
+              </th>
+
+              <th className="p-4 text-left text-xs font-semibold text-[#9b8fc2] uppercase tracking-wider">
+
+                Users
+
+              </th>
+
+              <th className="p-4 text-left text-xs font-semibold text-[#9b8fc2] uppercase tracking-wider">
+
+                Assignee
+
+              </th>
+
+              <th className="p-4 text-left text-xs font-semibold text-[#9b8fc2] uppercase tracking-wider">
+
+                Last Seen
+
+              </th>
+
+              <th className="p-4"></th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            {issues.map((issue) => (
+
+              <tr
+
+                key={issue.id}
+
+                className="border-b border-[rgba(124,58,237,0.1)] hover:bg-[#7c3aed]/5 transition-colors group"
+
+              >
+
+                <td className="p-4">
+
+                  <button
+
+                    onClick={() => toggleSelect(issue.id)}
+
+                    className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${issue.selected ? 'bg-[#7c3aed] border-[#7c3aed]' : 'border-[rgba(124,58,237,0.4)] hover:border-[#7c3aed]'}`}
+
+                  >
+
+                    {issue.selected && (
+
+                      <CheckIcon className="w-3 h-3 text-white" />
+
+                    )}
+
+                  </button>
+
+                </td>
+
+                <td className="p-4">
+
+                  <Link to={`/issues/${issue.id}`} className="block">
+
+                    <div className="flex items-center gap-3">
+
+                      <StatusIcon status={issue.status} />
+
+                      <div>
+
+                        <p className="text-sm font-medium text-[#e2dff0] group-hover:text-[#7c3aed] transition-colors line-clamp-1">
+
+                          {issue.title}
+
+                        </p>
+
+                        <p className="text-xs text-[#6b5f8a] font-mono">
+
+                          {issue.id}
+
+                        </p>
+
+                      </div>
+
+                    </div>
+
+                  </Link>
+
+                </td>
+
+                <td className="p-4">
+
+                  <PriorityBadge priority={issue.priority} />
+
+                </td>
+
+                <td className="p-4 text-sm text-[#9b8fc2]">
+
+                  {issue.events.toLocaleString()}
+
+                </td>
+
+                <td className="p-4 text-sm text-[#9b8fc2]">
+
+                  {issue.users.toLocaleString()}
+
+                </td>
+
+                <td className="p-4">
+
+                  {issue.assignee ? (
+
+                    <div className="flex items-center gap-2">
+
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#e91e8c] to-[#7c3aed] flex items-center justify-center text-white text-xs font-medium">
+
+                        {issue.assignee.initials}
+
+                      </div>
+
+                      <span className="text-sm text-[#9b8fc2]">
+
+                        {issue.assignee.name}
+
+                      </span>
+
+                    </div>
+
+                  ) : (
+
+                    <span className="text-sm text-[#6b5f8a]">Unassigned</span>
+
+                  )}
+
+                </td>
+
+                <td className="p-4 text-sm text-[#9b8fc2]">{issue.lastSeen}</td>
+
+                <td className="p-4">
+
+                  <button className="p-2 rounded-lg text-[#6b5f8a] hover:text-[#e2dff0] hover:bg-[#7c3aed]/10 opacity-0 group-hover:opacity-100 transition-all">
+
+                    <MoreHorizontalIcon className="w-4 h-4" />
+
+                  </button>
+
+                </td>
+
+              </tr>
+
+            ))}
+
+          </tbody>
+
+        </table>
+
+        {/* Pagination */}
+
+        <div className="p-4 border-t border-[rgba(124,58,237,0.2)] flex items-center justify-between">
+
+          <p className="text-sm text-[#9b8fc2]">
+
+            Showing <span className="font-medium text-[#e2dff0]">1-10</span> of{' '}
+
+            <span className="font-medium text-[#e2dff0]">248</span> issues
+
+          </p>
+
+          <div className="flex items-center gap-2">
+
+            <button className="sf-btn-secondary p-2">
+
+              <ChevronLeftIcon className="w-4 h-4" />
+
+            </button>
+
+            <button className="w-9 h-9 rounded-lg bg-[#7c3aed] text-white font-medium text-sm">
+
+              1
+
+            </button>
+
+            <button className="w-9 h-9 rounded-lg text-[#9b8fc2] hover:bg-[#7c3aed]/10 font-medium text-sm">
+
+              2
+
+            </button>
+
+            <button className="w-9 h-9 rounded-lg text-[#9b8fc2] hover:bg-[#7c3aed]/10 font-medium text-sm">
+
+              3
+
+            </button>
+
+            <span className="text-[#6b5f8a]">...</span>
+
+            <button className="w-9 h-9 rounded-lg text-[#9b8fc2] hover:bg-[#7c3aed]/10 font-medium text-sm">
+
+              25
+
+            </button>
+
+            <button className="sf-btn-secondary p-2">
+
+              <ChevronRightIcon className="w-4 h-4" />
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+```
+
+```pages/IssueDetailPage.tsx
+
+import React, { Children, Component } from 'react'
+
+import { useParams, Link } from 'react-router-dom'
+
+import {
+
+  ChevronRightIcon,
+
+  AlertCircleIcon,
+
+  ClockIcon,
+
+  UsersIcon,
+
+  ActivityIcon,
+
+  GitBranchIcon,
+
+  MessageSquareIcon,
+
+  TagIcon,
+
+  LinkIcon,
+
+  MoreHorizontalIcon,
+
+  PlayIcon,
+
+  CheckCircleIcon,
+
+  XCircleIcon,
+
+  RefreshCwIcon,
+
+  ExternalLinkIcon,
+
+} from 'lucide-react'
+
+import {
+
+  AreaChart,
+
+  Area,
+
+  ResponsiveContainer,
+
+  XAxis,
+
+  YAxis,
+
+  Tooltip,
+
+} from 'recharts'
+
+// Event frequency data
+
+const eventFrequencyData = [
+
+  {
+
+    time: '00:00',
+
+    events: 45,
+
+  },
+
+  {
+
+    time: '04:00',
+
+    events: 32,
+
+  },
+
+  {
+
+    time: '08:00',
+
+    events: 89,
+
+  },
+
+  {
+
+    time: '12:00',
+
+    events: 234,
+
+  },
+
+  {
+
+    time: '16:00',
+
+    events: 456,
+
+  },
+
+  {
+
+    time: '20:00',
+
+    events: 321,
+
+  },
+
+  {
+
+    time: '24:00',
+
+    events: 178,
+
+  },
+
+]
+
+// Timeline events
+
+const timelineEvents = [
+
+  {
+
+    id: 1,
+
+    type: 'created',
+
+    user: {
+
+      name: 'System',
+
+      initials: 'SY',
+
+    },
+
+    message: 'Issue automatically created from error tracking',
+
+    timestamp: '2 days ago',
+
+    details: 'First occurrence detected in production environment',
+
+  },
+
+  {
+
+    id: 2,
+
+    type: 'assigned',
+
+    user: {
+
+      name: 'Mike Ross',
+
+      initials: 'MR',
+
+    },
+
+    message: 'Assigned to Sarah Chen',
+
+    timestamp: '2 days ago',
+
+  },
+
+  {
+
+    id: 3,
+
+    type: 'comment',
+
+    user: {
+
+      name: 'Sarah Chen',
+
+      initials: 'SC',
+
+    },
+
+    message:
+
+      'Investigating the root cause. Looks like it might be related to the recent API changes.',
+
+    timestamp: '1 day ago',
+
+  },
+
+  {
+
+    id: 4,
+
+    type: 'status',
+
+    user: {
+
+      name: 'Sarah Chen',
+
+      initials: 'SC',
+
+    },
+
+    message: 'Changed status to Investigating',
+
+    timestamp: '1 day ago',
+
+  },
+
+  {
+
+    id: 5,
+
+    type: 'linked',
+
+    user: {
+
+      name: 'Sarah Chen',
+
+      initials: 'SC',
+
+    },
+
+    message: 'Linked to GitHub PR #1234',
+
+    timestamp: '12 hours ago',
+
+  },
+
+  {
+
+    id: 6,
+
+    type: 'comment',
+
+    user: {
+
+      name: 'Alex Kim',
+
+      initials: 'AK',
+
+    },
+
+    message:
+
+      'I can reproduce this on staging. The issue occurs when the API returns an empty array instead of null.',
+
+    timestamp: '6 hours ago',
+
+  },
+
+]
+
+// Stack trace
+
+const stackTrace = `TypeError: Cannot read property 'map' of undefined
+
+    at UserList.render (UserList.tsx:45:23)
+
+    at processChild (react-dom.development.js:3456:14)
+
+    at processChildren (react-dom.development.js:3512:5)
+
+    at reconcileChildren (react-dom.development.js:4567:3)
+
+    at updateFunctionComponent (react-dom.development.js:5678:7)
+
+    at beginWork (react-dom.development.js:6789:16)
+
+    at performUnitOfWork (react-dom.development.js:7890:12)
+
+    at workLoopSync (react-dom.development.js:7901:5)`
+
+// Tags
+
+const tags = ['frontend', 'react', 'production', 'user-facing']
+
+function TimelineIcon({ type }: { type: string }) {
+
+  switch (type) {
+
+    case 'created':
+
+      return <AlertCircleIcon className="w-4 h-4 text-[#e91e8c]" />
+
+    case 'assigned':
+
+      return <UsersIcon className="w-4 h-4 text-[#7c3aed]" />
+
+    case 'comment':
+
+      return <MessageSquareIcon className="w-4 h-4 text-[#9b8fc2]" />
+
+    case 'status':
+
+      return <RefreshCwIcon className="w-4 h-4 text-[#f59e0b]" />
+
+    case 'linked':
+
+      return <LinkIcon className="w-4 h-4 text-[#22c55e]" />
+
+    default:
+
+      return <ActivityIcon className="w-4 h-4 text-[#9b8fc2]" />
+
+  }
+
+}
+
+export function IssueDetailPage() {
+
+  const { id } = useParams()
+
+  return (
+
+    <div className="min-h-screen">
+
+      {/* Breadcrumb */}
+
+      <nav className="flex items-center gap-2 text-sm mb-6">
+
+        <Link
+
+          to="/issues"
+
+          className="text-[#9b8fc2] hover:text-[#e2dff0] transition-colors"
+
+        >
+
+          Issues
+
+        </Link>
+
+        <ChevronRightIcon className="w-4 h-4 text-[#6b5f8a]" />
+
+        <span className="text-[#e2dff0] font-medium">{id || 'ISS-1234'}</span>
+
+      </nav>
+
+      {/* Header */}
+
+      <div className="sf-card p-6 mb-6">
+
+        <div className="flex items-start justify-between mb-4">
+
+          <div className="flex items-start gap-4">
+
+            <div className="w-12 h-12 rounded-xl bg-[#e91e8c]/20 flex items-center justify-center">
+
+              <AlertCircleIcon className="w-6 h-6 text-[#e91e8c]" />
+
+            </div>
+
+            <div>
+
+              <div className="flex items-center gap-3 mb-2">
+
+                <span className="sf-badge sf-badge-critical">Critical</span>
+
+                <span className="text-xs text-[#6b5f8a] font-mono">
+
+                  {id || 'ISS-1234'}
+
+                </span>
+
+              </div>
+
+              <h1 className="text-2xl font-bold text-[#e2dff0] mb-2">
+
+                TypeError: Cannot read property "map" of undefined
+
+              </h1>
+
+              <div className="flex items-center gap-4 text-sm text-[#9b8fc2]">
+
+                <span className="flex items-center gap-1">
+
+                  <ClockIcon className="w-4 h-4" />
+
+                  First seen 2 days ago
+
+                </span>
+
+                <span className="flex items-center gap-1">
+
+                  <ActivityIcon className="w-4 h-4" />
+
+                  Last seen 2 min ago
+
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div className="flex items-center gap-2">
+
+            <button className="sf-btn-secondary flex items-center gap-2">
+
+              <CheckCircleIcon className="w-4 h-4" />
+
+              Resolve
+
+            </button>
+
+            <button className="sf-btn-secondary flex items-center gap-2">
+
+              <XCircleIcon className="w-4 h-4" />
+
+              Ignore
+
+            </button>
+
+            <button className="sf-btn-primary flex items-center gap-2">
+
+              <GitBranchIcon className="w-4 h-4" />
+
+              Create PR
+
+            </button>
+
+            <button className="sf-btn-ghost p-2">
+
+              <MoreHorizontalIcon className="w-5 h-5" />
+
+            </button>
+
+          </div>
+
+        </div>
+
+        {/* Stats Row */}
+
+        <div className="grid grid-cols-4 gap-4 pt-4 border-t border-[rgba(124,58,237,0.2)]">
+
+          <div>
+
+            <p className="text-sm text-[#9b8fc2] mb-1">Total Events</p>
+
+            <p className="text-2xl font-bold text-[#e2dff0]">2,847</p>
+
+          </div>
+
+          <div>
+
+            <p className="text-sm text-[#9b8fc2] mb-1">Affected Users</p>
+
+            <p className="text-2xl font-bold text-[#e2dff0]">1,234</p>
+
+          </div>
+
+          <div>
+
+            <p className="text-sm text-[#9b8fc2] mb-1">Status</p>
+
+            <div className="flex items-center gap-2">
+
+              <span className="w-2 h-2 rounded-full bg-[#f59e0b]" />
+
+              <span className="text-lg font-semibold text-[#f59e0b]">
+
+                Investigating
+
+              </span>
+
+            </div>
+
+          </div>
+
+          <div>
+
+            <p className="text-sm text-[#9b8fc2] mb-1">Assignee</p>
+
+            <div className="flex items-center gap-2">
+
+              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#e91e8c] to-[#7c3aed] flex items-center justify-center text-white text-xs font-medium">
+
+                SC
+
+              </div>
+
+              <span className="text-[#e2dff0] font-medium">Sarah Chen</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* Main Content Grid */}
+
+      <div className="grid grid-cols-3 gap-6">
+
+        {/* Left Column - Main Content */}
+
+        <div className="col-span-2 space-y-6">
+
+          {/* Event Frequency Chart */}
+
+          <div className="sf-card p-6">
+
+            <h2 className="text-lg font-semibold text-[#e2dff0] mb-4">
+
+              Event Frequency (24h)
+
+            </h2>
+
+            <div className="h-48">
+
+              <ResponsiveContainer width="100%" height="100%">
+
+                <AreaChart data={eventFrequencyData}>
+
+                  <defs>
+
+                    <linearGradient
+
+                      id="eventGradient"
+
+                      x1="0"
+
+                      y1="0"
+
+                      x2="0"
+
+                      y2="1"
+
+                    >
+
+                      <stop offset="0%" stopColor="#e91e8c" stopOpacity={0.4} />
+
+                      <stop
+
+                        offset="100%"
+
+                        stopColor="#7c3aed"
+
+                        stopOpacity={0.1}
+
+                      />
+
+                    </linearGradient>
+
+                  </defs>
+
+                  <XAxis
+
+                    dataKey="time"
+
+                    axisLine={false}
+
+                    tickLine={false}
+
+                    tick={{
+
+                      fill: '#6b5f8a',
+
+                      fontSize: 12,
+
+                    }}
+
+                  />
+
+                  <YAxis
+
+                    axisLine={false}
+
+                    tickLine={false}
+
+                    tick={{
+
+                      fill: '#6b5f8a',
+
+                      fontSize: 12,
+
+                    }}
+
+                  />
+
+                  <Tooltip
+
+                    contentStyle={{
+
+                      background: '#1a1333',
+
+                      border: '1px solid rgba(124, 58, 237, 0.3)',
+
+                      borderRadius: '8px',
+
+                      color: '#e2dff0',
+
+                    }}
+
+                  />
+
+                  <Area
+
+                    type="monotone"
+
+                    dataKey="events"
+
+                    stroke="#e91e8c"
+
+                    strokeWidth={2}
+
+                    fill="url(#eventGradient)"
+
+                  />
+
+                </AreaChart>
+
+              </ResponsiveContainer>
+
+            </div>
+
+          </div>
+
+          {/* Stack Trace */}
+
+          <div className="sf-card p-6">
+
+            <div className="flex items-center justify-between mb-4">
+
+              <h2 className="text-lg font-semibold text-[#e2dff0]">
+
+                Stack Trace
+
+              </h2>
+
+              <button className="sf-btn-ghost text-sm flex items-center gap-2">
+
+                <ExternalLinkIcon className="w-4 h-4" />
+
+                View in Source
+
+              </button>
+
+            </div>
+
+            <pre className="bg-[#0f0a1e] rounded-lg p-4 overflow-x-auto text-sm font-mono text-[#9b8fc2] leading-relaxed">
+
+              {stackTrace}
+
+            </pre>
+
+          </div>
+
+          {/* Activity Timeline */}
+
+          <div className="sf-card p-6">
+
+            <h2 className="text-lg font-semibold text-[#e2dff0] mb-6">
+
+              Activity
+
+            </h2>
+
+            <div className="space-y-6">
+
+              {timelineEvents.map((event, index) => (
+
+                <div key={event.id} className="flex gap-4">
+
+                  <div className="flex flex-col items-center">
+
+                    <div className="w-8 h-8 rounded-full bg-[#2d1f5e] flex items-center justify-center">
+
+                      <TimelineIcon type={event.type} />
+
+                    </div>
+
+                    {index < timelineEvents.length - 1 && (
+
+                      <div className="w-px h-full bg-[rgba(124,58,237,0.2)] mt-2" />
+
+                    )}
+
+                  </div>
+
+                  <div className="flex-1 pb-6">
+
+                    <div className="flex items-center gap-2 mb-1">
+
+                      <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#e91e8c] to-[#7c3aed] flex items-center justify-center text-white text-[10px] font-medium">
+
+                        {event.user.initials}
+
+                      </div>
+
+                      <span className="font-medium text-[#e2dff0]">
+
+                        {event.user.name}
+
+                      </span>
+
+                      <span className="text-[#6b5f8a] text-sm">
+
+                        {event.timestamp}
+
+                      </span>
+
+                    </div>
+
+                    <p className="text-[#9b8fc2]">{event.message}</p>
+
+                    {event.details && (
+
+                      <p className="text-sm text-[#6b5f8a] mt-1">
+
+                        {event.details}
+
+                      </p>
+
+                    )}
+
+                  </div>
+
+                </div>
+
+              ))}
+
+            </div>
+
+            {/* Add Comment */}
+
+            <div className="mt-6 pt-6 border-t border-[rgba(124,58,237,0.2)]">
+
+              <textarea
+
+                placeholder="Add a comment..."
+
+                className="sf-input min-h-[100px] resize-none mb-3"
+
+              />
+
+              <div className="flex justify-end">
+
+                <button className="sf-btn-primary">Post Comment</button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* Right Column - Sidebar */}
+
+        <div className="space-y-6">
+
+          {/* Quick Actions */}
+
+          <div className="sf-card p-4">
+
+            <h3 className="text-sm font-semibold text-[#9b8fc2] uppercase tracking-wider mb-3">
+
+              Quick Actions
+
+            </h3>
+
+            <div className="space-y-2">
+
+              <button className="w-full sf-btn-secondary justify-start flex items-center gap-2 text-sm">
+
+                <PlayIcon className="w-4 h-4" />
+
+                Replay Session
+
+              </button>
+
+              <button className="w-full sf-btn-secondary justify-start flex items-center gap-2 text-sm">
+
+                <GitBranchIcon className="w-4 h-4" />
+
+                View Related PRs
+
+              </button>
+
+              <button className="w-full sf-btn-secondary justify-start flex items-center gap-2 text-sm">
+
+                <LinkIcon className="w-4 h-4" />
+
+                Copy Issue Link
+
+              </button>
+
+            </div>
+
+          </div>
+
+          {/* Tags */}
+
+          <div className="sf-card p-4">
+
+            <div className="flex items-center justify-between mb-3">
+
+              <h3 className="text-sm font-semibold text-[#9b8fc2] uppercase tracking-wider">
+
+                Tags
+
+              </h3>
+
+              <button className="text-[#7c3aed] text-sm hover:underline">
+
+                Edit
+
+              </button>
+
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+
+              {tags.map((tag) => (
+
+                <span key={tag} className="sf-badge sf-badge-info">
+
+                  <TagIcon className="w-3 h-3 mr-1" />
+
+                  {tag}
+
+                </span>
+
+              ))}
+
+            </div>
+
+          </div>
+
+          {/* Environment */}
+
+          <div className="sf-card p-4">
+
+            <h3 className="text-sm font-semibold text-[#9b8fc2] uppercase tracking-wider mb-3">
+
+              Environment
+
+            </h3>
+
+            <div className="space-y-3 text-sm">
+
+              <div className="flex justify-between">
+
+                <span className="text-[#6b5f8a]">Browser</span>
+
+                <span className="text-[#e2dff0]">Chrome 120.0</span>
+
+              </div>
+
+              <div className="flex justify-between">
+
+                <span className="text-[#6b5f8a]">OS</span>
+
+                <span className="text-[#e2dff0]">macOS 14.2</span>
+
+              </div>
+
+              <div className="flex justify-between">
+
+                <span className="text-[#6b5f8a]">Device</span>
+
+                <span className="text-[#e2dff0]">Desktop</span>
+
+              </div>
+
+              <div className="flex justify-between">
+
+                <span className="text-[#6b5f8a]">Release</span>
+
+                <span className="text-[#e2dff0] font-mono">v2.4.1</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* Linked Issues */}
+
+          <div className="sf-card p-4">
+
+            <h3 className="text-sm font-semibold text-[#9b8fc2] uppercase tracking-wider mb-3">
+
+              Linked
+
+            </h3>
+
+            <div className="space-y-2">
+
+              <a
+
+                href="#"
+
+                className="flex items-center gap-2 p-2 rounded-lg hover:bg-[#7c3aed]/10 transition-colors"
+
+              >
+
+                <GitBranchIcon className="w-4 h-4 text-[#22c55e]" />
+
+                <span className="text-sm text-[#e2dff0]">PR #1234</span>
+
+                <span className="text-xs text-[#6b5f8a]">Open</span>
+
+              </a>
+
+              <a
+
+                href="#"
+
+                className="flex items-center gap-2 p-2 rounded-lg hover:bg-[#7c3aed]/10 transition-colors"
+
+              >
+
+                <AlertCircleIcon className="w-4 h-4 text-[#f59e0b]" />
+
+                <span className="text-sm text-[#e2dff0]">ISS-1198</span>
+
+                <span className="text-xs text-[#6b5f8a]">Related</span>
+
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+```
+
+```pages/MonthlyReportPage.tsx
+
+import React from 'react'
+
+import {
+
+  CalendarIcon,
+
+  DownloadIcon,
+
+  TrendingUpIcon,
+
+  TrendingDownIcon,
+
+  AlertCircleIcon,
+
+  CheckCircleIcon,
+
+  ClockIcon,
+
+  UsersIcon,
+
+  ZapIcon,
+
+  ArrowRightIcon,
+
+} from 'lucide-react'
+
+import {
+
+  AreaChart,
+
+  Area,
+
+  BarChart,
+
+  Bar,
+
+  PieChart,
+
+  Pie,
+
+  Cell,
+
+  ResponsiveContainer,
+
+  XAxis,
+
+  YAxis,
+
+  Tooltip,
+
+  Legend,
+
+} from 'recharts'
+
+// Weekly error trend data
+
+const errorTrendData = [
+
+  {
+
+    week: 'Week 1',
+
+    errors: 1245,
+
+    resolved: 1180,
+
+  },
+
+  {
+
+    week: 'Week 2',
+
+    errors: 1456,
+
+    resolved: 1320,
+
+  },
+
+  {
+
+    week: 'Week 3',
+
+    errors: 1123,
+
+    resolved: 1089,
+
+  },
+
+  {
+
+    week: 'Week 4',
+
+    errors: 987,
+
+    resolved: 945,
+
+  },
+
+]
+
+// Error distribution by type
+
+const errorDistribution = [
+
+  {
+
+    name: 'TypeError',
+
+    value: 35,
+
+    color: '#e91e8c',
+
+  },
+
+  {
+
+    name: 'NetworkError',
+
+    value: 25,
+
+    color: '#7c3aed',
+
+  },
+
+  {
+
+    name: 'SyntaxError',
+
+    value: 15,
+
+    color: '#f59e0b',
+
+  },
+
+  {
+
+    name: 'ReferenceError',
+
+    value: 12,
+
+    color: '#22c55e',
+
+  },
+
+  {
+
+    name: 'Other',
+
+    value: 13,
+
+    color: '#6b5f8a',
+
+  },
+
+]
+
+// Performance metrics over time
+
+const performanceData = [
+
+  {
+
+    day: '1',
+
+    p50: 120,
+
+    p95: 245,
+
+    p99: 450,
+
+  },
+
+  {
+
+    day: '5',
+
+    p50: 115,
+
+    p95: 238,
+
+    p99: 420,
+
+  },
+
+  {
+
+    day: '10',
+
+    p50: 125,
+
+    p95: 252,
+
+    p99: 480,
+
+  },
+
+  {
+
+    day: '15',
+
+    p50: 118,
+
+    p95: 240,
+
+    p99: 445,
+
+  },
+
+  {
+
+    day: '20',
+
+    p50: 122,
+
+    p95: 248,
+
+    p99: 460,
+
+  },
+
+  {
+
+    day: '25',
+
+    p50: 110,
+
+    p95: 235,
+
+    p99: 410,
+
+  },
+
+  {
+
+    day: '30',
+
+    p50: 108,
+
+    p95: 230,
+
+    p99: 395,
+
+  },
+
+]
+
+// Top issues
+
+const topIssues = [
+
+  {
+
+    id: 'ISS-1234',
+
+    title: 'TypeError in UserList component',
+
+    events: 2847,
+
+    trend: -12,
+
+  },
+
+  {
+
+    id: 'ISS-1233',
+
+    title: 'API timeout on checkout',
+
+    events: 1523,
+
+    trend: +8,
+
+  },
+
+  {
+
+    id: 'ISS-1232',
+
+    title: 'Memory leak in WebSocket',
+
+    events: 892,
+
+    trend: -5,
+
+  },
+
+  {
+
+    id: 'ISS-1231',
+
+    title: 'Slow database query',
+
+    events: 456,
+
+    trend: +15,
+
+  },
+
+  {
+
+    id: 'ISS-1230',
+
+    title: 'CSS layout shift',
+
+    events: 234,
+
+    trend: -20,
+
+  },
+
+]
+
+// Key insights
+
+const insights = [
+
+  {
+
+    type: 'success',
+
+    title: 'Error Rate Decreased',
+
+    description: 'Overall error rate dropped by 18% compared to last month',
+
+    icon: <TrendingDownIcon className="w-5 h-5" />,
+
+  },
+
+  {
+
+    type: 'warning',
+
+    title: 'Performance Regression',
+
+    description: 'P95 latency increased by 8ms in the checkout flow',
+
+    icon: <ClockIcon className="w-5 h-5" />,
+
+  },
+
+  {
+
+    type: 'info',
+
+    title: 'New Error Pattern',
+
+    description: '15 new unique error types detected this month',
+
+    icon: <AlertCircleIcon className="w-5 h-5" />,
+
+  },
+
+  {
+
+    type: 'success',
+
+    title: 'Resolution Time Improved',
+
+    description: 'Average time to resolve issues decreased by 2.3 hours',
+
+    icon: <CheckCircleIcon className="w-5 h-5" />,
+
+  },
+
+]
+
+type StatCardProps = {
+
+  title: string
+
+  value: string
+
+  change: string
+
+  isPositive: boolean
+
+  icon: React.ReactNode
+
+}
+
+function StatCard({ title, value, change, isPositive, icon }: StatCardProps) {
+
+  return (
+
+    <div className="sf-card p-5">
+
+      <div className="flex items-center justify-between mb-3">
+
+        <span className="text-[#9b8fc2] text-sm font-medium">{title}</span>
+
+        <div className="w-9 h-9 rounded-lg bg-[#2d1f5e] flex items-center justify-center text-[#7c3aed]">
+
+          {icon}
+
+        </div>
+
+      </div>
+
+      <p className="text-3xl font-bold text-[#e2dff0] mb-1">{value}</p>
+
+      <div
+
+        className={`flex items-center gap-1 text-sm ${isPositive ? 'text-[#22c55e]' : 'text-[#e91e8c]'}`}
+
+      >
+
+        {isPositive ? (
+
+          <TrendingUpIcon className="w-4 h-4" />
+
+        ) : (
+
+          <TrendingDownIcon className="w-4 h-4" />
+
+        )}
+
+        {change} vs last month
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+export function MonthlyReportPage() {
+
+  return (
+
+    <div className="min-h-screen">
+
+      {/* Header */}
+
+      <div className="flex items-center justify-between mb-8">
+
+        <div>
+
+          <h1 className="text-3xl font-bold text-[#e2dff0] mb-1">
+
+            Monthly Report
+
+          </h1>
+
+          <p className="text-[#9b8fc2]">January 2024 Performance Summary</p>
+
+        </div>
+
+        <div className="flex items-center gap-3">
+
+          <button className="sf-btn-secondary flex items-center gap-2">
+
+            <CalendarIcon className="w-4 h-4" />
+
+            January 2024
+
+          </button>
+
+          <button className="sf-btn-primary flex items-center gap-2">
+
+            <DownloadIcon className="w-4 h-4" />
+
+            Export PDF
+
+          </button>
+
+        </div>
+
+      </div>
+
+      {/* Key Metrics */}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+
+        <StatCard
+
+          title="Total Errors"
+
+          value="4,811"
+
+          change="-18%"
+
+          isPositive={true}
+
+          icon={<AlertCircleIcon className="w-5 h-5" />}
+
+        />
+
+        <StatCard
+
+          title="Resolved Issues"
+
+          value="4,534"
+
+          change="+12%"
+
+          isPositive={true}
+
+          icon={<CheckCircleIcon className="w-5 h-5" />}
+
+        />
+
+        <StatCard
+
+          title="Avg Resolution Time"
+
+          value="4.2h"
+
+          change="-2.3h"
+
+          isPositive={true}
+
+          icon={<ClockIcon className="w-5 h-5" />}
+
+        />
+
+        <StatCard
+
+          title="Affected Users"
+
+          value="12.4K"
+
+          change="-8%"
+
+          isPositive={true}
+
+          icon={<UsersIcon className="w-5 h-5" />}
+
+        />
+
+      </div>
+
+      {/* Key Insights */}
+
+      <div className="sf-card p-6 mb-8">
+
+        <h2 className="text-xl font-semibold text-[#e2dff0] mb-4">
+
+          Key Insights
+
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+          {insights.map((insight, index) => (
+
+            <div
+
+              key={index}
+
+              className={`p-4 rounded-lg border ${insight.type === 'success' ? 'bg-[#22c55e]/10 border-[#22c55e]/30' : insight.type === 'warning' ? 'bg-[#f59e0b]/10 border-[#f59e0b]/30' : 'bg-[#7c3aed]/10 border-[#7c3aed]/30'}`}
+
+            >
+
+              <div
+
+                className={`mb-2 ${insight.type === 'success' ? 'text-[#22c55e]' : insight.type === 'warning' ? 'text-[#f59e0b]' : 'text-[#7c3aed]'}`}
+
+              >
+
+                {insight.icon}
+
+              </div>
+
+              <h3 className="font-semibold text-[#e2dff0] mb-1">
+
+                {insight.title}
+
+              </h3>
+
+              <p className="text-sm text-[#9b8fc2]">{insight.description}</p>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      </div>
+
+      {/* Charts Grid */}
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+
+        {/* Error Trend */}
+
+        <div className="sf-card p-6">
+
+          <h2 className="text-lg font-semibold text-[#e2dff0] mb-4">
+
+            Weekly Error Trend
+
+          </h2>
+
+          <div className="h-64">
+
+            <ResponsiveContainer width="100%" height="100%">
+
+              <BarChart data={errorTrendData}>
+
+                <XAxis
+
+                  dataKey="week"
+
+                  axisLine={false}
+
+                  tickLine={false}
+
+                  tick={{
+
+                    fill: '#6b5f8a',
+
+                    fontSize: 12,
+
+                  }}
+
+                />
+
+                <YAxis
+
+                  axisLine={false}
+
+                  tickLine={false}
+
+                  tick={{
+
+                    fill: '#6b5f8a',
+
+                    fontSize: 12,
+
+                  }}
+
+                />
+
+                <Tooltip
+
+                  contentStyle={{
+
+                    background: '#1a1333',
+
+                    border: '1px solid rgba(124, 58, 237, 0.3)',
+
+                    borderRadius: '8px',
+
+                    color: '#e2dff0',
+
+                  }}
+
+                />
+
+                <Legend />
+
+                <Bar
+
+                  dataKey="errors"
+
+                  fill="#e91e8c"
+
+                  radius={[4, 4, 0, 0]}
+
+                  name="Total Errors"
+
+                />
+
+                <Bar
+
+                  dataKey="resolved"
+
+                  fill="#22c55e"
+
+                  radius={[4, 4, 0, 0]}
+
+                  name="Resolved"
+
+                />
+
+              </BarChart>
+
+            </ResponsiveContainer>
+
+          </div>
+
+        </div>
+
+        {/* Error Distribution */}
+
+        <div className="sf-card p-6">
+
+          <h2 className="text-lg font-semibold text-[#e2dff0] mb-4">
+
+            Error Distribution by Type
+
+          </h2>
+
+          <div className="h-64 flex items-center">
+
+            <ResponsiveContainer width="100%" height="100%">
+
+              <PieChart>
+
+                <Pie
+
+                  data={errorDistribution}
+
+                  cx="50%"
+
+                  cy="50%"
+
+                  innerRadius={60}
+
+                  outerRadius={90}
+
+                  paddingAngle={2}
+
+                  dataKey="value"
+
+                >
+
+                  {errorDistribution.map((entry, index) => (
+
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+
+                  ))}
+
+                </Pie>
+
+                <Tooltip
+
+                  contentStyle={{
+
+                    background: '#1a1333',
+
+                    border: '1px solid rgba(124, 58, 237, 0.3)',
+
+                    borderRadius: '8px',
+
+                    color: '#e2dff0',
+
+                  }}
+
+                />
+
+              </PieChart>
+
+            </ResponsiveContainer>
+
+            <div className="space-y-2">
+
+              {errorDistribution.map((item) => (
+
+                <div key={item.name} className="flex items-center gap-2">
+
+                  <div
+
+                    className="w-3 h-3 rounded-full"
+
+                    style={{
+
+                      background: item.color,
+
+                    }}
+
+                  />
+
+                  <span className="text-sm text-[#9b8fc2]">{item.name}</span>
+
+                  <span className="text-sm font-medium text-[#e2dff0]">
+
+                    {item.value}%
+
+                  </span>
+
+                </div>
+
+              ))}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* Performance Chart */}
+
+      <div className="sf-card p-6 mb-8">
+
+        <h2 className="text-lg font-semibold text-[#e2dff0] mb-4">
+
+          Latency Percentiles (ms)
+
+        </h2>
+
+        <div className="h-64">
+
+          <ResponsiveContainer width="100%" height="100%">
+
+            <AreaChart data={performanceData}>
+
+              <defs>
+
+                <linearGradient id="p50Gradient" x1="0" y1="0" x2="0" y2="1">
+
+                  <stop offset="0%" stopColor="#22c55e" stopOpacity={0.3} />
+
+                  <stop offset="100%" stopColor="#22c55e" stopOpacity={0} />
+
+                </linearGradient>
+
+                <linearGradient id="p95Gradient" x1="0" y1="0" x2="0" y2="1">
+
+                  <stop offset="0%" stopColor="#7c3aed" stopOpacity={0.3} />
+
+                  <stop offset="100%" stopColor="#7c3aed" stopOpacity={0} />
+
+                </linearGradient>
+
+                <linearGradient id="p99Gradient" x1="0" y1="0" x2="0" y2="1">
+
+                  <stop offset="0%" stopColor="#e91e8c" stopOpacity={0.3} />
+
+                  <stop offset="100%" stopColor="#e91e8c" stopOpacity={0} />
+
+                </linearGradient>
+
+              </defs>
+
+              <XAxis
+
+                dataKey="day"
+
+                axisLine={false}
+
+                tickLine={false}
+
+                tick={{
+
+                  fill: '#6b5f8a',
+
+                  fontSize: 12,
+
+                }}
+
+              />
+
+              <YAxis
+
+                axisLine={false}
+
+                tickLine={false}
+
+                tick={{
+
+                  fill: '#6b5f8a',
+
+                  fontSize: 12,
+
+                }}
+
+              />
+
+              <Tooltip
+
+                contentStyle={{
+
+                  background: '#1a1333',
+
+                  border: '1px solid rgba(124, 58, 237, 0.3)',
+
+                  borderRadius: '8px',
+
+                  color: '#e2dff0',
+
+                }}
+
+              />
+
+              <Legend />
+
+              <Area
+
+                type="monotone"
+
+                dataKey="p99"
+
+                stroke="#e91e8c"
+
+                fill="url(#p99Gradient)"
+
+                name="P99"
+
+              />
+
+              <Area
+
+                type="monotone"
+
+                dataKey="p95"
+
+                stroke="#7c3aed"
+
+                fill="url(#p95Gradient)"
+
+                name="P95"
+
+              />
+
+              <Area
+
+                type="monotone"
+
+                dataKey="p50"
+
+                stroke="#22c55e"
+
+                fill="url(#p50Gradient)"
+
+                name="P50"
+
+              />
+
+            </AreaChart>
+
+          </ResponsiveContainer>
+
+        </div>
+
+      </div>
+
+      {/* Top Issues */}
+
+      <div className="sf-card p-6">
+
+        <div className="flex items-center justify-between mb-4">
+
+          <h2 className="text-lg font-semibold text-[#e2dff0]">
+
+            Top Issues This Month
+
+          </h2>
+
+          <button className="sf-btn-ghost text-sm flex items-center gap-1">
+
+            View All <ArrowRightIcon className="w-4 h-4" />
+
+          </button>
+
+        </div>
+
+        <div className="space-y-3">
+
+          {topIssues.map((issue, index) => (
+
+            <div
+
+              key={issue.id}
+
+              className="flex items-center justify-between p-4 rounded-lg bg-[#0f0a1e] hover:bg-[#2d1f5e]/30 transition-colors"
+
+            >
+
+              <div className="flex items-center gap-4">
+
+                <span className="text-2xl font-bold text-[#6b5f8a]">
+
+                  #{index + 1}
+
+                </span>
+
+                <div>
+
+                  <p className="font-medium text-[#e2dff0]">{issue.title}</p>
+
+                  <p className="text-sm text-[#6b5f8a] font-mono">{issue.id}</p>
+
+                </div>
+
+              </div>
+
+              <div className="flex items-center gap-6">
+
+                <div className="text-right">
+
+                  <p className="font-semibold text-[#e2dff0]">
+
+                    {issue.events.toLocaleString()}
+
+                  </p>
+
+                  <p className="text-xs text-[#6b5f8a]">events</p>
+
+                </div>
+
+                <div
+
+                  className={`flex items-center gap-1 ${issue.trend < 0 ? 'text-[#22c55e]' : 'text-[#e91e8c]'}`}
+
+                >
+
+                  {issue.trend < 0 ? (
+
+                    <TrendingDownIcon className="w-4 h-4" />
+
+                  ) : (
+
+                    <TrendingUpIcon className="w-4 h-4" />
+
+                  )}
+
+                  <span className="font-medium">{Math.abs(issue.trend)}%</span>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+```
+
+```pages/FigmaReviewPage.tsx
+
+import React, { useState } from 'react'
+
+import {
+
+  MessageSquareIcon,
+
+  CheckCircleIcon,
+
+  XCircleIcon,
+
+  ChevronLeftIcon,
+
+  ChevronRightIcon,
+
+  ZoomInIcon,
+
+  ZoomOutIcon,
+
+  MaximizeIcon,
+
+  DownloadIcon,
+
+  ShareIcon,
+
+  MoreHorizontalIcon,
+
+  PlusIcon,
+
+  EyeIcon,
+
+  LayersIcon,
+
+  PenToolIcon,
+
+} from 'lucide-react'
+
+// Mock design screens
+
+const designScreens = [
+
+  {
+
+    id: 1,
+
+    name: 'Dashboard - Main View',
+
+    status: 'approved',
+
+    comments: 3,
+
+    lastUpdated: '2 hours ago',
+
+    thumbnail:
+
+      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop',
+
+  },
+
+  {
+
+    id: 2,
+
+    name: 'Issues List - Desktop',
+
+    status: 'pending',
+
+    comments: 5,
+
+    lastUpdated: '4 hours ago',
+
+    thumbnail:
+
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop',
+
+  },
+
+  {
+
+    id: 3,
+
+    name: 'Issue Detail - Expanded',
+
+    status: 'changes_requested',
+
+    comments: 8,
+
+    lastUpdated: '1 day ago',
+
+    thumbnail:
+
+      'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=400&h=300&fit=crop',
+
+  },
+
+  {
+
+    id: 4,
+
+    name: 'Settings - Profile Tab',
+
+    status: 'approved',
+
+    comments: 2,
+
+    lastUpdated: '2 days ago',
+
+    thumbnail:
+
+      'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=300&fit=crop',
+
+  },
+
+  {
+
+    id: 5,
+
+    name: 'Onboarding - Step 1',
+
+    status: 'pending',
+
+    comments: 0,
+
+    lastUpdated: '3 days ago',
+
+    thumbnail:
+
+      'https://images.unsplash.com/photo-1559028012-481c04fa702d?w=400&h=300&fit=crop',
+
+  },
+
+]
+
+// Mock comments
+
+const mockComments = [
+
+  {
+
+    id: 1,
+
+    user: {
+
+      name: 'Sarah Chen',
+
+      initials: 'SC',
+
+    },
+
+    message:
+
+      'The spacing between the metric cards looks a bit tight. Can we increase it to 24px?',
+
+    timestamp: '2 hours ago',
+
+    resolved: false,
+
+    position: {
+
+      x: 45,
+
+      y: 30,
+
+    },
+
+  },
+
+  {
+
+    id: 2,
+
+    user: {
+
+      name: 'Mike Ross',
+
+      initials: 'MR',
+
+    },
+
+    message: 'Love the gradient on the alert banner! Very on-brand.',
+
+    timestamp: '3 hours ago',
+
+    resolved: true,
+
+    position: {
+
+      x: 20,
+
+      y: 15,
+
+    },
+
+  },
+
+  {
+
+    id: 3,
+
+    user: {
+
+      name: 'Alex Kim',
+
+      initials: 'AK',
+
+    },
+
+    message: 'Should we add a hover state for the funnel bars?',
+
+    timestamp: '4 hours ago',
+
+    resolved: false,
+
+    position: {
+
+      x: 70,
+
+      y: 60,
+
+    },
+
+  },
+
+]
+
+function StatusBadge({ status }: { status: string }) {
+
+  const styles: Record<
+
+    string,
+
+    {
+
+      bg: string
+
+      text: string
+
+      label: string
+
+    }
+
+  > = {
+
+    approved: {
+
+      bg: 'bg-[#22c55e]/20',
+
+      text: 'text-[#22c55e]',
+
+      label: 'Approved',
+
+    },
+
+    pending: {
+
+      bg: 'bg-[#f59e0b]/20',
+
+      text: 'text-[#f59e0b]',
+
+      label: 'Pending Review',
+
+    },
+
+    changes_requested: {
+
+      bg: 'bg-[#e91e8c]/20',
+
+      text: 'text-[#e91e8c]',
+
+      label: 'Changes Requested',
+
+    },
+
+  }
+
+  const style = styles[status] || styles.pending
+
+  return (
+
+    <span
+
+      className={`px-2 py-1 rounded-full text-xs font-medium ${style.bg} ${style.text}`}
+
+    >
+
+      {style.label}
+
+    </span>
+
+  )
+
+}
+
+export function FigmaReviewPage() {
+
+  const [selectedScreen, setSelectedScreen] = useState(designScreens[0])
+
+  const [zoom, setZoom] = useState(100)
+
+  const [showComments, setShowComments] = useState(true)
+
+  return (
+
+    <div className="min-h-screen">
+
+      {/* Header */}
+
+      <div className="flex items-center justify-between mb-6">
+
+        <div>
+
+          <h1 className="text-3xl font-bold text-[#e2dff0] mb-1">
+
+            Figma Review
+
+          </h1>
+
+          <p className="text-[#9b8fc2]">Review and approve design mockups</p>
+
+        </div>
+
+        <div className="flex items-center gap-3">
+
+          <button className="sf-btn-secondary flex items-center gap-2">
+
+            <ShareIcon className="w-4 h-4" />
+
+            Share
+
+          </button>
+
+          <button className="sf-btn-primary flex items-center gap-2">
+
+            <CheckCircleIcon className="w-4 h-4" />
+
+            Approve All
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <div className="grid grid-cols-4 gap-6">
+
+        {/* Screen List */}
+
+        <div className="col-span-1 space-y-4">
+
+          <div className="sf-card p-4">
+
+            <h2 className="text-sm font-semibold text-[#9b8fc2] uppercase tracking-wider mb-4">
+
+              Screens
+
+            </h2>
+
+            <div className="space-y-3">
+
+              {designScreens.map((screen) => (
+
+                <button
+
+                  key={screen.id}
+
+                  onClick={() => setSelectedScreen(screen)}
+
+                  className={`w-full text-left p-3 rounded-lg transition-all ${selectedScreen.id === screen.id ? 'bg-[#7c3aed]/20 border border-[#7c3aed]/40' : 'bg-[#0f0a1e] hover:bg-[#2d1f5e]/30 border border-transparent'}`}
+
+                >
+
+                  <div className="aspect-video rounded-md overflow-hidden mb-2 bg-[#2d1f5e]">
+
+                    <img
+
+                      src={screen.thumbnail}
+
+                      alt={screen.name}
+
+                      className="w-full h-full object-cover"
+
+                    />
+
+                  </div>
+
+                  <p className="text-sm font-medium text-[#e2dff0] truncate">
+
+                    {screen.name}
+
+                  </p>
+
+                  <div className="flex items-center justify-between mt-2">
+
+                    <StatusBadge status={screen.status} />
+
+                    <div className="flex items-center gap-1 text-[#6b5f8a]">
+
+                      <MessageSquareIcon className="w-3 h-3" />
+
+                      <span className="text-xs">{screen.comments}</span>
+
+                    </div>
+
+                  </div>
+
+                </button>
+
+              ))}
+
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* Main Preview */}
+
+        <div className="col-span-2">
+
+          <div className="sf-card overflow-hidden">
+
+            {/* Toolbar */}
+
+            <div className="p-3 border-b border-[rgba(124,58,237,0.2)] flex items-center justify-between">
+
+              <div className="flex items-center gap-2">
+
+                <button className="sf-btn-ghost p-2">
+
+                  <ChevronLeftIcon className="w-4 h-4" />
+
+                </button>
+
+                <span className="text-sm text-[#9b8fc2]">
+
+                  {designScreens.findIndex((s) => s.id === selectedScreen.id) +
+
+                    1}{' '}
+
+                  / {designScreens.length}
+
+                </span>
+
+                <button className="sf-btn-ghost p-2">
+
+                  <ChevronRightIcon className="w-4 h-4" />
+
+                </button>
+
+              </div>
+
+              <div className="flex items-center gap-2">
+
+                <button
+
+                  onClick={() => setZoom(Math.max(50, zoom - 25))}
+
+                  className="sf-btn-ghost p-2"
+
+                >
+
+                  <ZoomOutIcon className="w-4 h-4" />
+
+                </button>
+
+                <span className="text-sm text-[#9b8fc2] w-12 text-center">
+
+                  {zoom}%
+
+                </span>
+
+                <button
+
+                  onClick={() => setZoom(Math.min(200, zoom + 25))}
+
+                  className="sf-btn-ghost p-2"
+
+                >
+
+                  <ZoomInIcon className="w-4 h-4" />
+
+                </button>
+
+                <div className="w-px h-6 bg-[rgba(124,58,237,0.2)] mx-2" />
+
+                <button
+
+                  onClick={() => setShowComments(!showComments)}
+
+                  className={`sf-btn-ghost p-2 ${showComments ? 'text-[#7c3aed]' : ''}`}
+
+                >
+
+                  <MessageSquareIcon className="w-4 h-4" />
+
+                </button>
+
+                <button className="sf-btn-ghost p-2">
+
+                  <LayersIcon className="w-4 h-4" />
+
+                </button>
+
+                <button className="sf-btn-ghost p-2">
+
+                  <MaximizeIcon className="w-4 h-4" />
+
+                </button>
+
+              </div>
+
+            </div>
+
+            {/* Preview Area */}
+
+            <div className="relative bg-[#0f0a1e] p-8 min-h-[500px] flex items-center justify-center overflow-auto">
+
+              <div
+
+                className="relative transition-transform"
+
+                style={{
+
+                  transform: `scale(${zoom / 100})`,
+
+                }}
+
+              >
+
+                <img
+
+                  src={selectedScreen.thumbnail}
+
+                  alt={selectedScreen.name}
+
+                  className="rounded-lg shadow-2xl max-w-full"
+
+                  style={{
+
+                    width: '800px',
+
+                    height: '500px',
+
+                    objectFit: 'cover',
+
+                  }}
+
+                />
+
+                {/* Comment Markers */}
+
+                {showComments &&
+
+                  mockComments.map((comment) => (
+
+                    <div
+
+                      key={comment.id}
+
+                      className="absolute w-6 h-6 rounded-full bg-[#e91e8c] flex items-center justify-center text-white text-xs font-bold cursor-pointer hover:scale-110 transition-transform"
+
+                      style={{
+
+                        left: `${comment.position.x}%`,
+
+                        top: `${comment.position.y}%`,
+
+                      }}
+
+                    >
+
+                      {comment.id}
+
+                    </div>
+
+                  ))}
+
+              </div>
+
+              {/* Add Comment Button */}
+
+              <button className="absolute bottom-4 right-4 sf-btn-primary flex items-center gap-2">
+
+                <PlusIcon className="w-4 h-4" />
+
+                Add Comment
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* Comments Panel */}
+
+        <div className="col-span-1">
+
+          <div className="sf-card p-4">
+
+            <div className="flex items-center justify-between mb-4">
+
+              <h2 className="text-sm font-semibold text-[#9b8fc2] uppercase tracking-wider">
+
+                Comments
+
+              </h2>
+
+              <span className="text-xs text-[#6b5f8a]">
+
+                {mockComments.length} total
+
+              </span>
+
+            </div>
+
+            <div className="space-y-4">
+
+              {mockComments.map((comment) => (
+
+                <div
+
+                  key={comment.id}
+
+                  className={`p-3 rounded-lg ${comment.resolved ? 'bg-[#0f0a1e] opacity-60' : 'bg-[#0f0a1e]'}`}
+
+                >
+
+                  <div className="flex items-start gap-3">
+
+                    <div className="w-6 h-6 rounded-full bg-[#e91e8c] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+
+                      {comment.id}
+
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+
+                      <div className="flex items-center gap-2 mb-1">
+
+                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#e91e8c] to-[#7c3aed] flex items-center justify-center text-white text-[8px] font-medium">
+
+                          {comment.user.initials}
+
+                        </div>
+
+                        <span className="text-sm font-medium text-[#e2dff0]">
+
+                          {comment.user.name}
+
+                        </span>
+
+                        <span className="text-xs text-[#6b5f8a]">
+
+                          {comment.timestamp}
+
+                        </span>
+
+                      </div>
+
+                      <p className="text-sm text-[#9b8fc2]">
+
+                        {comment.message}
+
+                      </p>
+
+                      <div className="flex items-center gap-2 mt-2">
+
+                        {comment.resolved ? (
+
+                          <span className="text-xs text-[#22c55e] flex items-center gap-1">
+
+                            <CheckCircleIcon className="w-3 h-3" />
+
+                            Resolved
+
+                          </span>
+
+                        ) : (
+
+                          <>
+
+                            <button className="text-xs text-[#7c3aed] hover:underline">
+
+                              Reply
+
+                            </button>
+
+                            <button className="text-xs text-[#22c55e] hover:underline">
+
+                              Resolve
+
+                            </button>
+
+                          </>
+
+                        )}
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              ))}
+
+            </div>
+
+            {/* Screen Info */}
+
+            <div className="mt-6 pt-4 border-t border-[rgba(124,58,237,0.2)]">
+
+              <h3 className="text-sm font-semibold text-[#e2dff0] mb-3">
+
+                {selectedScreen.name}
+
+              </h3>
+
+              <div className="space-y-2 text-sm">
+
+                <div className="flex justify-between">
+
+                  <span className="text-[#6b5f8a]">Status</span>
+
+                  <StatusBadge status={selectedScreen.status} />
+
+                </div>
+
+                <div className="flex justify-between">
+
+                  <span className="text-[#6b5f8a]">Last Updated</span>
+
+                  <span className="text-[#9b8fc2]">
+
+                    {selectedScreen.lastUpdated}
+
+                  </span>
+
+                </div>
+
+              </div>
+
+              <div className="flex gap-2 mt-4">
+
+                <button className="flex-1 sf-btn-secondary text-sm flex items-center justify-center gap-1">
+
+                  <XCircleIcon className="w-4 h-4" />
+
+                  Request Changes
+
+                </button>
+
+                <button className="flex-1 sf-btn-primary text-sm flex items-center justify-center gap-1">
+
+                  <CheckCircleIcon className="w-4 h-4" />
+
+                  Approve
+
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+```
+
+```pages/GitHubPRPage.tsx
+
+import React, { useState } from 'react'
+
+import {
+
+  GitPullRequestIcon,
+
+  GitMergeIcon,
+
+  GitBranchIcon,
+
+  CheckCircleIcon,
+
+  XCircleIcon,
+
+  MessageSquareIcon,
+
+  FileIcon,
+
+  PlusIcon,
+
+  MinusIcon,
+
+  ChevronDownIcon,
+
+  ChevronRightIcon,
+
+  CopyIcon,
+
+  ExternalLinkIcon,
+
+  ClockIcon,
+
+  AlertCircleIcon,
+
+} from 'lucide-react'
+
+// Mock PR data
+
+const prData = {
+
+  number: 1234,
+
+  title: 'Fix TypeError in UserList component when API returns empty array',
+
+  description: `## Summary
+
+This PR fixes the critical TypeError that occurs when the API returns an empty array instead of null for the user list.
+
+## Changes
+
+- Added null check in UserList.tsx
+
+- Updated API response handling in useUsers hook
+
+- Added unit tests for edge cases
+
+## Related Issues
+
+- Fixes ISS-1234
+
+- Related to ISS-1198
+
+## Testing
+
+- [x] Unit tests pass
+
+- [x] Integration tests pass
+
+- [x] Manual testing completed`,
+
+  author: {
+
+    name: 'Sarah Chen',
+
+    initials: 'SC',
+
+  },
+
+  branch: 'fix/user-list-typeerror',
+
+  baseBranch: 'main',
+
+  status: 'open',
+
+  createdAt: '2 hours ago',
+
+  commits: 3,
+
+  additions: 45,
+
+  deletions: 12,
+
+  changedFiles: 4,
+
+  checks: [
+
+    {
+
+      name: 'Build',
+
+      status: 'success',
+
+    },
+
+    {
+
+      name: 'Unit Tests',
+
+      status: 'success',
+
+    },
+
+    {
+
+      name: 'Integration Tests',
+
+      status: 'success',
+
+    },
+
+    {
+
+      name: 'Lint',
+
+      status: 'success',
+
+    },
+
+    {
+
+      name: 'Type Check',
+
+      status: 'pending',
+
+    },
+
+  ],
+
+  reviewers: [
+
+    {
+
+      name: 'Mike Ross',
+
+      initials: 'MR',
+
+      status: 'approved',
+
+    },
+
+    {
+
+      name: 'Alex Kim',
+
+      initials: 'AK',
+
+      status: 'pending',
+
+    },
+
+  ],
+
+}
+
+// Mock file changes
+
+const fileChanges = [
+
+  {
+
+    name: 'src/components/UserList.tsx',
+
+    additions: 15,
+
+    deletions: 3,
+
+    diff: `@@ -42,7 +42,19 @@ export function UserList({ users }: UserListProps) {
+
+-  return users.map((user) => (
+
++  if (!users || users.length === 0) {
+
++    return (
+
++      <div className="empty-state">
+
++        <p>No users found</p>
+
++      </div>
+
++    );
+
++  }
+
++
+
++  return users.map((user) => (`,
+
+  },
+
+  {
+
+    name: 'src/hooks/useUsers.ts',
+
+    additions: 20,
+
+    deletions: 5,
+
+    diff: `@@ -15,8 +15,23 @@ export function useUsers() {
+
+-  const { data } = await fetchUsers();
+
+-  return data;
+
++  const { data } = await fetchUsers();
+
++  
+
++  // Handle empty or null response
+
++  if (!data) {
+
++    return [];
+
++  }
+
++  
+
++  return data;`,
+
+  },
+
+  {
+
+    name: 'src/components/__tests__/UserList.test.tsx',
+
+    additions: 8,
+
+    deletions: 2,
+
+    diff: `@@ -25,6 +25,14 @@ describe('UserList', () => {
+
++  it('should render empty state when users is empty array', () => {
+
++    render(<UserList users={[]} />);
+
++    expect(screen.getByText('No users found')).toBeInTheDocument();
+
++  });
+
++
+
++  it('should render empty state when users is null', () => {
+
++    render(<UserList users={null} />);
+
++    expect(screen.getByText('No users found')).toBeInTheDocument();
+
++  });`,
+
+  },
+
+  {
+
+    name: 'src/types/user.ts',
+
+    additions: 2,
+
+    deletions: 2,
+
+    diff: `@@ -5,5 +5,5 @@ export interface User {
+
+ }
+
+-export type UserListProps = {
+
+-  users: User[];
+
++export type UserListProps = {
+
++  users: User[] | null;
+
+ };`,
+
+  },
+
+]
+
+// Mock comments
+
+const prComments = [
+
+  {
+
+    id: 1,
+
+    user: {
+
+      name: 'Mike Ross',
+
+      initials: 'MR',
+
+    },
+
+    message:
+
+      'Great fix! The null check looks good. One small suggestion - should we also add a loading state?',
+
+    timestamp: '1 hour ago',
+
+    file: 'src/components/UserList.tsx',
+
+    line: 45,
+
+  },
+
+  {
+
+    id: 2,
+
+    user: {
+
+      name: 'Sarah Chen',
+
+      initials: 'SC',
+
+    },
+
+    message:
+
+      "Good point! I'll add that in a follow-up PR to keep this one focused on the bug fix.",
+
+    timestamp: '45 min ago',
+
+    isReply: true,
+
+  },
+
+]
+
+function CheckIcon({ status }: { status: string }) {
+
+  switch (status) {
+
+    case 'success':
+
+      return <CheckCircleIcon className="w-4 h-4 text-[#22c55e]" />
+
+    case 'pending':
+
+      return <ClockIcon className="w-4 h-4 text-[#f59e0b]" />
+
+    case 'failed':
+
+      return <XCircleIcon className="w-4 h-4 text-[#e91e8c]" />
+
+    default:
+
+      return null
+
+  }
+
+}
+
+export function GitHubPRPage() {
+
+  const [expandedFiles, setExpandedFiles] = useState<string[]>([
+
+    fileChanges[0].name,
+
+  ])
+
+  const toggleFile = (fileName: string) => {
+
+    setExpandedFiles((prev) =>
+
+      prev.includes(fileName)
+
+        ? prev.filter((f) => f !== fileName)
+
+        : [...prev, fileName],
+
+    )
+
+  }
+
+  return (
+
+    <div className="min-h-screen">
+
+      {/* Header */}
+
+      <div className="sf-card p-6 mb-6">
+
+        <div className="flex items-start justify-between mb-4">
+
+          <div className="flex items-start gap-4">
+
+            <div className="w-12 h-12 rounded-xl bg-[#22c55e]/20 flex items-center justify-center">
+
+              <GitPullRequestIcon className="w-6 h-6 text-[#22c55e]" />
+
+            </div>
+
+            <div>
+
+              <div className="flex items-center gap-3 mb-2">
+
+                <span className="px-2 py-1 rounded-full text-xs font-medium bg-[#22c55e]/20 text-[#22c55e]">
+
+                  Open
+
+                </span>
+
+                <span className="text-[#6b5f8a] font-mono">
+
+                  #{prData.number}
+
+                </span>
+
+              </div>
+
+              <h1 className="text-2xl font-bold text-[#e2dff0] mb-2">
+
+                {prData.title}
+
+              </h1>
+
+              <div className="flex items-center gap-4 text-sm text-[#9b8fc2]">
+
+                <div className="flex items-center gap-2">
+
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#e91e8c] to-[#7c3aed] flex items-center justify-center text-white text-xs font-medium">
+
+                    {prData.author.initials}
+
+                  </div>
+
+                  <span>{prData.author.name}</span>
+
+                </div>
+
+                <span>opened {prData.createdAt}</span>
+
+                <span className="flex items-center gap-1">
+
+                  <GitBranchIcon className="w-4 h-4" />
+
+                  {prData.branch}
+
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div className="flex items-center gap-2">
+
+            <button className="sf-btn-secondary flex items-center gap-2">
+
+              <MessageSquareIcon className="w-4 h-4" />
+
+              Comment
+
+            </button>
+
+            <button className="sf-btn-primary flex items-center gap-2">
+
+              <GitMergeIcon className="w-4 h-4" />
+
+              Merge PR
+
+            </button>
+
+          </div>
+
+        </div>
+
+        {/* Branch Info */}
+
+        <div className="flex items-center gap-2 p-3 bg-[#0f0a1e] rounded-lg text-sm">
+
+          <GitBranchIcon className="w-4 h-4 text-[#7c3aed]" />
+
+          <span className="font-mono text-[#9b8fc2]">{prData.branch}</span>
+
+          <span className="text-[#6b5f8a]">→</span>
+
+          <span className="font-mono text-[#9b8fc2]">{prData.baseBranch}</span>
+
+          <button className="ml-auto sf-btn-ghost p-1">
+
+            <CopyIcon className="w-4 h-4" />
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <div className="grid grid-cols-3 gap-6">
+
+        {/* Main Content */}
+
+        <div className="col-span-2 space-y-6">
+
+          {/* Description */}
+
+          <div className="sf-card p-6">
+
+            <h2 className="text-lg font-semibold text-[#e2dff0] mb-4">
+
+              Description
+
+            </h2>
+
+            <div className="prose prose-invert prose-sm max-w-none">
+
+              <div className="text-[#9b8fc2] whitespace-pre-wrap">
+
+                {prData.description}
+
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* File Changes */}
+
+          <div className="sf-card overflow-hidden">
+
+            <div className="p-4 border-b border-[rgba(124,58,237,0.2)] flex items-center justify-between">
+
+              <h2 className="text-lg font-semibold text-[#e2dff0]">
+
+                Files Changed
+
+              </h2>
+
+              <div className="flex items-center gap-4 text-sm">
+
+                <span className="text-[#22c55e]">+{prData.additions}</span>
+
+                <span className="text-[#e91e8c]">-{prData.deletions}</span>
+
+                <span className="text-[#9b8fc2]">
+
+                  {prData.changedFiles} files
+
+                </span>
+
+              </div>
+
+            </div>
+
+            <div className="divide-y divide-[rgba(124,58,237,0.1)]">
+
+              {fileChanges.map((file) => (
+
+                <div key={file.name}>
+
+                  <button
+
+                    onClick={() => toggleFile(file.name)}
+
+                    className="w-full p-4 flex items-center justify-between hover:bg-[#7c3aed]/5 transition-colors"
+
+                  >
+
+                    <div className="flex items-center gap-3">
+
+                      {expandedFiles.includes(file.name) ? (
+
+                        <ChevronDownIcon className="w-4 h-4 text-[#6b5f8a]" />
+
+                      ) : (
+
+                        <ChevronRightIcon className="w-4 h-4 text-[#6b5f8a]" />
+
+                      )}
+
+                      <FileIcon className="w-4 h-4 text-[#7c3aed]" />
+
+                      <span className="font-mono text-sm text-[#e2dff0]">
+
+                        {file.name}
+
+                      </span>
+
+                    </div>
+
+                    <div className="flex items-center gap-3 text-sm">
+
+                      <span className="text-[#22c55e]">+{file.additions}</span>
+
+                      <span className="text-[#e91e8c]">-{file.deletions}</span>
+
+                    </div>
+
+                  </button>
+
+                  {expandedFiles.includes(file.name) && (
+
+                    <div className="bg-[#0f0a1e] p-4 overflow-x-auto">
+
+                      <pre className="text-sm font-mono leading-relaxed">
+
+                        {file.diff.split('\n').map((line, i) => (
+
+                          <div
+
+                            key={i}
+
+                            className={`px-2 ${line.startsWith('+') && !line.startsWith('@@') ? 'bg-[#22c55e]/10 text-[#22c55e]' : line.startsWith('-') && !line.startsWith('@@') ? 'bg-[#e91e8c]/10 text-[#e91e8c]' : line.startsWith('@@') ? 'text-[#7c3aed]' : 'text-[#9b8fc2]'}`}
+
+                          >
+
+                            {line}
+
+                          </div>
+
+                        ))}
+
+                      </pre>
+
+                    </div>
+
+                  )}
+
+                </div>
+
+              ))}
+
+            </div>
+
+          </div>
+
+          {/* Comments */}
+
+          <div className="sf-card p-6">
+
+            <h2 className="text-lg font-semibold text-[#e2dff0] mb-4">
+
+              Conversation
+
+            </h2>
+
+            <div className="space-y-4">
+
+              {prComments.map((comment) => (
+
+                <div
+
+                  key={comment.id}
+
+                  className={`p-4 rounded-lg bg-[#0f0a1e] ${comment.isReply ? 'ml-8' : ''}`}
+
+                >
+
+                  <div className="flex items-start gap-3">
+
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#e91e8c] to-[#7c3aed] flex items-center justify-center text-white text-xs font-medium">
+
+                      {comment.user.initials}
+
+                    </div>
+
+                    <div className="flex-1">
+
+                      <div className="flex items-center gap-2 mb-2">
+
+                        <span className="font-medium text-[#e2dff0]">
+
+                          {comment.user.name}
+
+                        </span>
+
+                        <span className="text-xs text-[#6b5f8a]">
+
+                          {comment.timestamp}
+
+                        </span>
+
+                        {comment.file && (
+
+                          <span className="text-xs text-[#7c3aed] font-mono">
+
+                            {comment.file}:{comment.line}
+
+                          </span>
+
+                        )}
+
+                      </div>
+
+                      <p className="text-[#9b8fc2]">{comment.message}</p>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              ))}
+
+            </div>
+
+            <div className="mt-4 pt-4 border-t border-[rgba(124,58,237,0.2)]">
+
+              <textarea
+
+                placeholder="Leave a comment..."
+
+                className="sf-input min-h-[100px] resize-none mb-3"
+
+              />
+
+              <div className="flex justify-end">
+
+                <button className="sf-btn-primary">Comment</button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* Sidebar */}
+
+        <div className="space-y-6">
+
+          {/* Checks */}
+
+          <div className="sf-card p-4">
+
+            <h3 className="text-sm font-semibold text-[#9b8fc2] uppercase tracking-wider mb-3">
+
+              Checks
+
+            </h3>
+
+            <div className="space-y-2">
+
+              {prData.checks.map((check) => (
+
+                <div
+
+                  key={check.name}
+
+                  className="flex items-center justify-between p-2 rounded-lg hover:bg-[#7c3aed]/5"
+
+                >
+
+                  <div className="flex items-center gap-2">
+
+                    <CheckIcon status={check.status} />
+
+                    <span className="text-sm text-[#e2dff0]">{check.name}</span>
+
+                  </div>
+
+                  <span
+
+                    className={`text-xs ${check.status === 'success' ? 'text-[#22c55e]' : check.status === 'pending' ? 'text-[#f59e0b]' : 'text-[#e91e8c]'}`}
+
+                  >
+
+                    {check.status}
+
+                  </span>
+
+                </div>
+
+              ))}
+
+            </div>
+
+          </div>
+
+          {/* Reviewers */}
+
+          <div className="sf-card p-4">
+
+            <h3 className="text-sm font-semibold text-[#9b8fc2] uppercase tracking-wider mb-3">
+
+              Reviewers
+
+            </h3>
+
+            <div className="space-y-3">
+
+              {prData.reviewers.map((reviewer) => (
+
+                <div
+
+                  key={reviewer.name}
+
+                  className="flex items-center justify-between"
+
+                >
+
+                  <div className="flex items-center gap-2">
+
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#e91e8c] to-[#7c3aed] flex items-center justify-center text-white text-xs font-medium">
+
+                      {reviewer.initials}
+
+                    </div>
+
+                    <span className="text-sm text-[#e2dff0]">
+
+                      {reviewer.name}
+
+                    </span>
+
+                  </div>
+
+                  {reviewer.status === 'approved' ? (
+
+                    <CheckCircleIcon className="w-5 h-5 text-[#22c55e]" />
+
+                  ) : (
+
+                    <ClockIcon className="w-5 h-5 text-[#f59e0b]" />
+
+                  )}
+
+                </div>
+
+              ))}
+
+            </div>
+
+          </div>
+
+          {/* Stats */}
+
+          <div className="sf-card p-4">
+
+            <h3 className="text-sm font-semibold text-[#9b8fc2] uppercase tracking-wider mb-3">
+
+              Stats
+
+            </h3>
+
+            <div className="space-y-3 text-sm">
+
+              <div className="flex justify-between">
+
+                <span className="text-[#6b5f8a]">Commits</span>
+
+                <span className="text-[#e2dff0]">{prData.commits}</span>
+
+              </div>
+
+              <div className="flex justify-between">
+
+                <span className="text-[#6b5f8a]">Files Changed</span>
+
+                <span className="text-[#e2dff0]">{prData.changedFiles}</span>
+
+              </div>
+
+              <div className="flex justify-between">
+
+                <span className="text-[#6b5f8a]">Additions</span>
+
+                <span className="text-[#22c55e]">+{prData.additions}</span>
+
+              </div>
+
+              <div className="flex justify-between">
+
+                <span className="text-[#6b5f8a]">Deletions</span>
+
+                <span className="text-[#e91e8c]">-{prData.deletions}</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* Related Issues */}
+
+          <div className="sf-card p-4">
+
+            <h3 className="text-sm font-semibold text-[#9b8fc2] uppercase tracking-wider mb-3">
+
+              Related Issues
+
+            </h3>
+
+            <div className="space-y-2">
+
+              <a
+
+                href="#"
+
+                className="flex items-center gap-2 p-2 rounded-lg hover:bg-[#7c3aed]/10 transition-colors"
+
+              >
+
+                <AlertCircleIcon className="w-4 h-4 text-[#e91e8c]" />
+
+                <span className="text-sm text-[#e2dff0]">ISS-1234</span>
+
+                <span className="text-xs text-[#6b5f8a]">Fixes</span>
+
+              </a>
+
+              <a
+
+                href="#"
+
+                className="flex items-center gap-2 p-2 rounded-lg hover:bg-[#7c3aed]/10 transition-colors"
+
+              >
+
+                <AlertCircleIcon className="w-4 h-4 text-[#f59e0b]" />
+
+                <span className="text-sm text-[#e2dff0]">ISS-1198</span>
+
+                <span className="text-xs text-[#6b5f8a]">Related</span>
+
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+```
+
+```pages/SettingsPage.tsx
+
+import React, { useState } from 'react'
+
+import {
+
+  UserIcon,
+
+  BellIcon,
+
+  ShieldIcon,
+
+  PaletteIcon,
+
+  KeyIcon,
+
+  UsersIcon,
+
+  WebhookIcon,
+
+  CreditCardIcon,
+
+  SaveIcon,
+
+  CameraIcon,
+
+  CheckIcon,
+
+  TrashIcon,
+
+  PlusIcon,
+
+} from 'lucide-react'
+
+type Tab =
+
+  | 'profile'
+
+  | 'notifications'
+
+  | 'security'
+
+  | 'appearance'
+
+  | 'team'
+
+  | 'integrations'
+
+  | 'billing'
+
+const tabs: {
+
+  id: Tab
+
+  label: string
+
+  icon: React.ReactNode
+
+}[] = [
+
+  {
+
+    id: 'profile',
+
+    label: 'Profile',
+
+    icon: <UserIcon className="w-4 h-4" />,
+
+  },
+
+  {
+
+    id: 'notifications',
+
+    label: 'Notifications',
+
+    icon: <BellIcon className="w-4 h-4" />,
+
+  },
+
+  {
+
+    id: 'security',
+
+    label: 'Security',
+
+    icon: <ShieldIcon className="w-4 h-4" />,
+
+  },
+
+  {
+
+    id: 'appearance',
+
+    label: 'Appearance',
+
+    icon: <PaletteIcon className="w-4 h-4" />,
+
+  },
+
+  {
+
+    id: 'team',
+
+    label: 'Team',
+
+    icon: <UsersIcon className="w-4 h-4" />,
+
+  },
+
+  {
+
+    id: 'integrations',
+
+    label: 'Integrations',
+
+    icon: <WebhookIcon className="w-4 h-4" />,
+
+  },
+
+  {
+
+    id: 'billing',
+
+    label: 'Billing',
+
+    icon: <CreditCardIcon className="w-4 h-4" />,
+
+  },
+
+]
+
+// Mock team members
+
+const teamMembers = [
+
+  {
+
+    name: 'Sarah Chen',
+
+    email: 'sarah@synapseflow.io',
+
+    role: 'Admin',
+
+    initials: 'SC',
+
+  },
+
+  {
+
+    name: 'Mike Ross',
+
+    email: 'mike@synapseflow.io',
+
+    role: 'Developer',
+
+    initials: 'MR',
+
+  },
+
+  {
+
+    name: 'Alex Kim',
+
+    email: 'alex@synapseflow.io',
+
+    role: 'Developer',
+
+    initials: 'AK',
+
+  },
+
+  {
+
+    name: 'Emma Wilson',
+
+    email: 'emma@synapseflow.io',
+
+    role: 'Viewer',
+
+    initials: 'EW',
+
+  },
+
+]
+
+// Mock integrations
+
+const integrations = [
+
+  {
+
+    name: 'GitHub',
+
+    description: 'Connect your repositories',
+
+    connected: true,
+
+    icon: '🐙',
+
+  },
+
+  {
+
+    name: 'Slack',
+
+    description: 'Get notifications in Slack',
+
+    connected: true,
+
+    icon: '💬',
+
+  },
+
+  {
+
+    name: 'Jira',
+
+    description: 'Sync issues with Jira',
+
+    connected: false,
+
+    icon: '📋',
+
+  },
+
+  {
+
+    name: 'PagerDuty',
+
+    description: 'Alert on-call engineers',
+
+    connected: false,
+
+    icon: '🚨',
+
+  },
+
+  {
+
+    name: 'Figma',
+
+    description: 'Review design files',
+
+    connected: true,
+
+    icon: '🎨',
+
+  },
+
+]
+
+export function SettingsPage() {
+
+  const [activeTab, setActiveTab] = useState<Tab>('profile')
+
+  const [notifications, setNotifications] = useState({
+
+    email: true,
+
+    push: true,
+
+    slack: false,
+
+    critical: true,
+
+    weekly: true,
+
+  })
+
+  return (
+
+    <div className="min-h-screen">
+
+      {/* Header */}
+
+      <div className="mb-8">
+
+        <h1 className="text-3xl font-bold text-[#e2dff0] mb-1">Settings</h1>
+
+        <p className="text-[#9b8fc2]">Manage your account and preferences</p>
+
+      </div>
+
+      <div className="flex gap-6">
+
+        {/* Sidebar Tabs */}
+
+        <div className="w-56 flex-shrink-0">
+
+          <nav className="sf-card p-2 space-y-1">
+
+            {tabs.map((tab) => (
+
+              <button
+
+                key={tab.id}
+
+                onClick={() => setActiveTab(tab.id)}
+
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-left ${activeTab === tab.id ? 'bg-[#7c3aed]/20 text-[#e2dff0] border border-[#7c3aed]/40' : 'text-[#9b8fc2] hover:bg-[#7c3aed]/10 hover:text-[#e2dff0] border border-transparent'}`}
+
+              >
+
+                <span className={activeTab === tab.id ? 'text-[#7c3aed]' : ''}>
+
+                  {tab.icon}
+
+                </span>
+
+                <span className="font-medium">{tab.label}</span>
+
+              </button>
+
+            ))}
+
+          </nav>
+
+        </div>
+
+        {/* Content */}
+
+        <div className="flex-1">
+
+          {activeTab === 'profile' && (
+
+            <div className="sf-card p-6">
+
+              <h2 className="text-xl font-semibold text-[#e2dff0] mb-6">
+
+                Profile Settings
+
+              </h2>
+
+              {/* Avatar */}
+
+              <div className="flex items-center gap-6 mb-8">
+
+                <div className="relative">
+
+                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#e91e8c] to-[#7c3aed] flex items-center justify-center text-white text-3xl font-bold">
+
+                    JD
+
+                  </div>
+
+                  <button className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-[#2d1f5e] border border-[rgba(124,58,237,0.3)] flex items-center justify-center text-[#9b8fc2] hover:text-[#e2dff0] transition-colors">
+
+                    <CameraIcon className="w-4 h-4" />
+
+                  </button>
+
+                </div>
+
+                <div>
+
+                  <h3 className="font-semibold text-[#e2dff0]">
+
+                    Profile Photo
+
+                  </h3>
+
+                  <p className="text-sm text-[#9b8fc2] mb-2">
+
+                    JPG, PNG or GIF. Max 2MB.
+
+                  </p>
+
+                  <button className="sf-btn-secondary text-sm">
+
+                    Upload New
+
+                  </button>
+
+                </div>
+
+              </div>
+
+              {/* Form */}
+
+              <div className="space-y-6">
+
+                <div className="grid grid-cols-2 gap-6">
+
+                  <div>
+
+                    <label className="block text-sm font-medium text-[#9b8fc2] mb-2">
+
+                      First Name
+
+                    </label>
+
+                    <input
+
+                      type="text"
+
+                      defaultValue="John"
+
+                      className="sf-input"
+
+                    />
+
+                  </div>
+
+                  <div>
+
+                    <label className="block text-sm font-medium text-[#9b8fc2] mb-2">
+
+                      Last Name
+
+                    </label>
+
+                    <input
+
+                      type="text"
+
+                      defaultValue="Doe"
+
+                      className="sf-input"
+
+                    />
+
+                  </div>
+
+                </div>
+
+                <div>
+
+                  <label className="block text-sm font-medium text-[#9b8fc2] mb-2">
+
+                    Email
+
+                  </label>
+
+                  <input
+
+                    type="email"
+
+                    defaultValue="john@synapseflow.io"
+
+                    className="sf-input"
+
+                  />
+
+                </div>
+
+                <div>
+
+                  <label className="block text-sm font-medium text-[#9b8fc2] mb-2">
+
+                    Job Title
+
+                  </label>
+
+                  <input
+
+                    type="text"
+
+                    defaultValue="Senior Software Engineer"
+
+                    className="sf-input"
+
+                  />
+
+                </div>
+
+                <div>
+
+                  <label className="block text-sm font-medium text-[#9b8fc2] mb-2">
+
+                    Bio
+
+                  </label>
+
+                  <textarea
+
+                    rows={3}
+
+                    defaultValue="Building great software and fixing bugs."
+
+                    className="sf-input resize-none"
+
+                  />
+
+                </div>
+
+                <div className="flex justify-end">
+
+                  <button className="sf-btn-primary flex items-center gap-2">
+
+                    <SaveIcon className="w-4 h-4" />
+
+                    Save Changes
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          )}
+
+          {activeTab === 'notifications' && (
+
+            <div className="sf-card p-6">
+
+              <h2 className="text-xl font-semibold text-[#e2dff0] mb-6">
+
+                Notification Preferences
+
+              </h2>
+
+              <div className="space-y-6">
+
+                {/* Email Notifications */}
+
+                <div className="flex items-center justify-between p-4 bg-[#0f0a1e] rounded-lg">
+
+                  <div>
+
+                    <h3 className="font-medium text-[#e2dff0]">
+
+                      Email Notifications
+
+                    </h3>
+
+                    <p className="text-sm text-[#9b8fc2]">
+
+                      Receive updates via email
+
+                    </p>
+
+                  </div>
+
+                  <button
+
+                    onClick={() =>
+
+                      setNotifications({
+
+                        ...notifications,
+
+                        email: !notifications.email,
+
+                      })
+
+                    }
+
+                    className={`w-12 h-6 rounded-full transition-colors ${notifications.email ? 'bg-[#7c3aed]' : 'bg-[#2d1f5e]'}`}
+
+                  >
+
+                    <div
+
+                      className={`w-5 h-5 rounded-full bg-white transition-transform ${notifications.email ? 'translate-x-6' : 'translate-x-0.5'}`}
+
+                    />
+
+                  </button>
+
+                </div>
+
+                {/* Push Notifications */}
+
+                <div className="flex items-center justify-between p-4 bg-[#0f0a1e] rounded-lg">
+
+                  <div>
+
+                    <h3 className="font-medium text-[#e2dff0]">
+
+                      Push Notifications
+
+                    </h3>
+
+                    <p className="text-sm text-[#9b8fc2]">
+
+                      Receive browser push notifications
+
+                    </p>
+
+                  </div>
+
+                  <button
+
+                    onClick={() =>
+
+                      setNotifications({
+
+                        ...notifications,
+
+                        push: !notifications.push,
+
+                      })
+
+                    }
+
+                    className={`w-12 h-6 rounded-full transition-colors ${notifications.push ? 'bg-[#7c3aed]' : 'bg-[#2d1f5e]'}`}
+
+                  >
+
+                    <div
+
+                      className={`w-5 h-5 rounded-full bg-white transition-transform ${notifications.push ? 'translate-x-6' : 'translate-x-0.5'}`}
+
+                    />
+
+                  </button>
+
+                </div>
+
+                {/* Slack Notifications */}
+
+                <div className="flex items-center justify-between p-4 bg-[#0f0a1e] rounded-lg">
+
+                  <div>
+
+                    <h3 className="font-medium text-[#e2dff0]">
+
+                      Slack Notifications
+
+                    </h3>
+
+                    <p className="text-sm text-[#9b8fc2]">
+
+                      Get notified in your Slack workspace
+
+                    </p>
+
+                  </div>
+
+                  <button
+
+                    onClick={() =>
+
+                      setNotifications({
+
+                        ...notifications,
+
+                        slack: !notifications.slack,
+
+                      })
+
+                    }
+
+                    className={`w-12 h-6 rounded-full transition-colors ${notifications.slack ? 'bg-[#7c3aed]' : 'bg-[#2d1f5e]'}`}
+
+                  >
+
+                    <div
+
+                      className={`w-5 h-5 rounded-full bg-white transition-transform ${notifications.slack ? 'translate-x-6' : 'translate-x-0.5'}`}
+
+                    />
+
+                  </button>
+
+                </div>
+
+                {/* Critical Alerts */}
+
+                <div className="flex items-center justify-between p-4 bg-[#0f0a1e] rounded-lg">
+
+                  <div>
+
+                    <h3 className="font-medium text-[#e2dff0]">
+
+                      Critical Alerts
+
+                    </h3>
+
+                    <p className="text-sm text-[#9b8fc2]">
+
+                      Always notify for critical issues
+
+                    </p>
+
+                  </div>
+
+                  <button
+
+                    onClick={() =>
+
+                      setNotifications({
+
+                        ...notifications,
+
+                        critical: !notifications.critical,
+
+                      })
+
+                    }
+
+                    className={`w-12 h-6 rounded-full transition-colors ${notifications.critical ? 'bg-[#e91e8c]' : 'bg-[#2d1f5e]'}`}
+
+                  >
+
+                    <div
+
+                      className={`w-5 h-5 rounded-full bg-white transition-transform ${notifications.critical ? 'translate-x-6' : 'translate-x-0.5'}`}
+
+                    />
+
+                  </button>
+
+                </div>
+
+                {/* Weekly Digest */}
+
+                <div className="flex items-center justify-between p-4 bg-[#0f0a1e] rounded-lg">
+
+                  <div>
+
+                    <h3 className="font-medium text-[#e2dff0]">
+
+                      Weekly Digest
+
+                    </h3>
+
+                    <p className="text-sm text-[#9b8fc2]">
+
+                      Receive a weekly summary email
+
+                    </p>
+
+                  </div>
+
+                  <button
+
+                    onClick={() =>
+
+                      setNotifications({
+
+                        ...notifications,
+
+                        weekly: !notifications.weekly,
+
+                      })
+
+                    }
+
+                    className={`w-12 h-6 rounded-full transition-colors ${notifications.weekly ? 'bg-[#7c3aed]' : 'bg-[#2d1f5e]'}`}
+
+                  >
+
+                    <div
+
+                      className={`w-5 h-5 rounded-full bg-white transition-transform ${notifications.weekly ? 'translate-x-6' : 'translate-x-0.5'}`}
+
+                    />
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          )}
+
+          {activeTab === 'security' && (
+
+            <div className="space-y-6">
+
+              <div className="sf-card p-6">
+
+                <h2 className="text-xl font-semibold text-[#e2dff0] mb-6">
+
+                  Password
+
+                </h2>
+
+                <div className="space-y-4">
+
+                  <div>
+
+                    <label className="block text-sm font-medium text-[#9b8fc2] mb-2">
+
+                      Current Password
+
+                    </label>
+
+                    <input
+
+                      type="password"
+
+                      className="sf-input"
+
+                      placeholder="••••••••"
+
+                    />
+
+                  </div>
+
+                  <div>
+
+                    <label className="block text-sm font-medium text-[#9b8fc2] mb-2">
+
+                      New Password
+
+                    </label>
+
+                    <input
+
+                      type="password"
+
+                      className="sf-input"
+
+                      placeholder="••••••••"
+
+                    />
+
+                  </div>
+
+                  <div>
+
+                    <label className="block text-sm font-medium text-[#9b8fc2] mb-2">
+
+                      Confirm New Password
+
+                    </label>
+
+                    <input
+
+                      type="password"
+
+                      className="sf-input"
+
+                      placeholder="••••••••"
+
+                    />
+
+                  </div>
+
+                  <button className="sf-btn-primary">Update Password</button>
+
+                </div>
+
+              </div>
+
+              <div className="sf-card p-6">
+
+                <h2 className="text-xl font-semibold text-[#e2dff0] mb-4">
+
+                  Two-Factor Authentication
+
+                </h2>
+
+                <p className="text-[#9b8fc2] mb-4">
+
+                  Add an extra layer of security to your account
+
+                </p>
+
+                <button className="sf-btn-secondary flex items-center gap-2">
+
+                  <KeyIcon className="w-4 h-4" />
+
+                  Enable 2FA
+
+                </button>
+
+              </div>
+
+              <div className="sf-card p-6">
+
+                <h2 className="text-xl font-semibold text-[#e2dff0] mb-4">
+
+                  Active Sessions
+
+                </h2>
+
+                <div className="space-y-3">
+
+                  <div className="flex items-center justify-between p-3 bg-[#0f0a1e] rounded-lg">
+
+                    <div>
+
+                      <p className="font-medium text-[#e2dff0]">
+
+                        Chrome on macOS
+
+                      </p>
+
+                      <p className="text-sm text-[#6b5f8a]">
+
+                        San Francisco, CA • Current session
+
+                      </p>
+
+                    </div>
+
+                    <span className="text-xs text-[#22c55e]">Active</span>
+
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-[#0f0a1e] rounded-lg">
+
+                    <div>
+
+                      <p className="font-medium text-[#e2dff0]">
+
+                        Safari on iPhone
+
+                      </p>
+
+                      <p className="text-sm text-[#6b5f8a]">
+
+                        San Francisco, CA • 2 hours ago
+
+                      </p>
+
+                    </div>
+
+                    <button className="text-xs text-[#e91e8c] hover:underline">
+
+                      Revoke
+
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          )}
+
+          {activeTab === 'team' && (
+
+            <div className="sf-card p-6">
+
+              <div className="flex items-center justify-between mb-6">
+
+                <h2 className="text-xl font-semibold text-[#e2dff0]">
+
+                  Team Members
+
+                </h2>
+
+                <button className="sf-btn-primary flex items-center gap-2">
+
+                  <PlusIcon className="w-4 h-4" />
+
+                  Invite Member
+
+                </button>
+
+              </div>
+
+              <div className="space-y-3">
+
+                {teamMembers.map((member) => (
+
+                  <div
+
+                    key={member.email}
+
+                    className="flex items-center justify-between p-4 bg-[#0f0a1e] rounded-lg"
+
+                  >
+
+                    <div className="flex items-center gap-3">
+
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#e91e8c] to-[#7c3aed] flex items-center justify-center text-white font-medium">
+
+                        {member.initials}
+
+                      </div>
+
+                      <div>
+
+                        <p className="font-medium text-[#e2dff0]">
+
+                          {member.name}
+
+                        </p>
+
+                        <p className="text-sm text-[#6b5f8a]">{member.email}</p>
+
+                      </div>
+
+                    </div>
+
+                    <div className="flex items-center gap-4">
+
+                      <select className="sf-input py-1.5 px-3 text-sm w-32">
+
+                        <option
+
+                          value="admin"
+
+                          selected={member.role === 'Admin'}
+
+                        >
+
+                          Admin
+
+                        </option>
+
+                        <option
+
+                          value="developer"
+
+                          selected={member.role === 'Developer'}
+
+                        >
+
+                          Developer
+
+                        </option>
+
+                        <option
+
+                          value="viewer"
+
+                          selected={member.role === 'Viewer'}
+
+                        >
+
+                          Viewer
+
+                        </option>
+
+                      </select>
+
+                      <button className="p-2 text-[#6b5f8a] hover:text-[#e91e8c] transition-colors">
+
+                        <TrashIcon className="w-4 h-4" />
+
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                ))}
+
+              </div>
+
+            </div>
+
+          )}
+
+          {activeTab === 'integrations' && (
+
+            <div className="sf-card p-6">
+
+              <h2 className="text-xl font-semibold text-[#e2dff0] mb-6">
+
+                Integrations
+
+              </h2>
+
+              <div className="space-y-4">
+
+                {integrations.map((integration) => (
+
+                  <div
+
+                    key={integration.name}
+
+                    className="flex items-center justify-between p-4 bg-[#0f0a1e] rounded-lg"
+
+                  >
+
+                    <div className="flex items-center gap-4">
+
+                      <div className="w-12 h-12 rounded-lg bg-[#2d1f5e] flex items-center justify-center text-2xl">
+
+                        {integration.icon}
+
+                      </div>
+
+                      <div>
+
+                        <p className="font-medium text-[#e2dff0]">
+
+                          {integration.name}
+
+                        </p>
+
+                        <p className="text-sm text-[#6b5f8a]">
+
+                          {integration.description}
+
+                        </p>
+
+                      </div>
+
+                    </div>
+
+                    {integration.connected ? (
+
+                      <div className="flex items-center gap-3">
+
+                        <span className="flex items-center gap-1 text-sm text-[#22c55e]">
+
+                          <CheckIcon className="w-4 h-4" />
+
+                          Connected
+
+                        </span>
+
+                        <button className="sf-btn-ghost text-sm text-[#e91e8c]">
+
+                          Disconnect
+
+                        </button>
+
+                      </div>
+
+                    ) : (
+
+                      <button className="sf-btn-secondary text-sm">
+
+                        Connect
+
+                      </button>
+
+                    )}
+
+                  </div>
+
+                ))}
+
+              </div>
+
+            </div>
+
+          )}
+
+          {activeTab === 'billing' && (
+
+            <div className="space-y-6">
+
+              <div className="sf-card p-6">
+
+                <h2 className="text-xl font-semibold text-[#e2dff0] mb-4">
+
+                  Current Plan
+
+                </h2>
+
+                <div className="flex items-center justify-between p-4 bg-gradient-to-r from-[#e91e8c]/20 to-[#7c3aed]/20 rounded-lg border border-[#7c3aed]/40">
+
+                  <div>
+
+                    <p className="text-2xl font-bold sf-gradient-text">
+
+                      Pro Plan
+
+                    </p>
+
+                    <p className="text-[#9b8fc2]">$29/month • Billed monthly</p>
+
+                  </div>
+
+                  <button className="sf-btn-secondary">Upgrade</button>
+
+                </div>
+
+              </div>
+
+              <div className="sf-card p-6">
+
+                <h2 className="text-xl font-semibold text-[#e2dff0] mb-4">
+
+                  Payment Method
+
+                </h2>
+
+                <div className="flex items-center justify-between p-4 bg-[#0f0a1e] rounded-lg">
+
+                  <div className="flex items-center gap-3">
+
+                    <div className="w-12 h-8 bg-[#2d1f5e] rounded flex items-center justify-center text-[#9b8fc2]">
+
+                      <CreditCardIcon className="w-5 h-5" />
+
+                    </div>
+
+                    <div>
+
+                      <p className="font-medium text-[#e2dff0]">
+
+                        •••• •••• •••• 4242
+
+                      </p>
+
+                      <p className="text-sm text-[#6b5f8a]">Expires 12/25</p>
+
+                    </div>
+
+                  </div>
+
+                  <button className="sf-btn-ghost text-sm">Update</button>
+
+                </div>
+
+              </div>
+
+              <div className="sf-card p-6">
+
+                <h2 className="text-xl font-semibold text-[#e2dff0] mb-4">
+
+                  Billing History
+
+                </h2>
+
+                <div className="space-y-2">
+
+                  {[
+
+                    {
+
+                      date: 'Jan 1, 2024',
+
+                      amount: '$29.00',
+
+                      status: 'Paid',
+
+                    },
+
+                    {
+
+                      date: 'Dec 1, 2023',
+
+                      amount: '$29.00',
+
+                      status: 'Paid',
+
+                    },
+
+                    {
+
+                      date: 'Nov 1, 2023',
+
+                      amount: '$29.00',
+
+                      status: 'Paid',
+
+                    },
+
+                  ].map((invoice, i) => (
+
+                    <div
+
+                      key={i}
+
+                      className="flex items-center justify-between p-3 bg-[#0f0a1e] rounded-lg"
+
+                    >
+
+                      <span className="text-[#9b8fc2]">{invoice.date}</span>
+
+                      <span className="text-[#e2dff0]">{invoice.amount}</span>
+
+                      <span className="text-[#22c55e] text-sm">
+
+                        {invoice.status}
+
+                      </span>
+
+                      <button className="text-[#7c3aed] text-sm hover:underline">
+
+                        Download
+
+                      </button>
+
+                    </div>
+
+                  ))}
+
+                </div>
+
+              </div>
+
+            </div>
+
+          )}
+
+          {activeTab === 'appearance' && (
+
+            <div className="sf-card p-6">
+
+              <h2 className="text-xl font-semibold text-[#e2dff0] mb-6">
+
+                Appearance
+
+              </h2>
+
+              <div className="space-y-6">
+
+                <div>
+
+                  <label className="block text-sm font-medium text-[#9b8fc2] mb-3">
+
+                    Theme
+
+                  </label>
+
+                  <div className="grid grid-cols-3 gap-4">
+
+                    <button className="p-4 rounded-lg bg-[#0f0a1e] border-2 border-[#7c3aed] text-center">
+
+                      <div className="w-full h-20 rounded bg-[#0f0a1e] mb-2 border border-[rgba(124,58,237,0.3)]" />
+
+                      <span className="text-sm text-[#e2dff0]">Dark</span>
+
+                    </button>
+
+                    <button className="p-4 rounded-lg bg-[#0f0a1e] border-2 border-transparent hover:border-[rgba(124,58,237,0.3)] text-center">
+
+                      <div className="w-full h-20 rounded bg-white mb-2" />
+
+                      <span className="text-sm text-[#9b8fc2]">Light</span>
+
+                    </button>
+
+                    <button className="p-4 rounded-lg bg-[#0f0a1e] border-2 border-transparent hover:border-[rgba(124,58,237,0.3)] text-center">
+
+                      <div className="w-full h-20 rounded bg-gradient-to-b from-white to-[#0f0a1e] mb-2" />
+
+                      <span className="text-sm text-[#9b8fc2]">System</span>
+
+                    </button>
+
+                  </div>
+
+                </div>
+
+                <div>
+
+                  <label className="block text-sm font-medium text-[#9b8fc2] mb-3">
+
+                    Accent Color
+
+                  </label>
+
+                  <div className="flex gap-3">
+
+                    {[
+
+                      '#e91e8c',
+
+                      '#7c3aed',
+
+                      '#22c55e',
+
+                      '#f59e0b',
+
+                      '#3b82f6',
+
+                    ].map((color) => (
+
+                      <button
+
+                        key={color}
+
+                        className={`w-10 h-10 rounded-full ${color === '#7c3aed' ? 'ring-2 ring-white ring-offset-2 ring-offset-[#1a1333]' : ''}`}
+
+                        style={{
+
+                          background: color,
+
+                        }}
+
+                      />
+
+                    ))}
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          )}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+```
+
+```pages/OnboardingPage.tsx
+
+import React, { useState } from 'react'
+
+import { useNavigate } from 'react-router-dom'
+
+import {
+
+  ZapIcon,
+
+  ArrowRightIcon,
+
+  ArrowLeftIcon,
+
+  CheckIcon,
+
+  CodeIcon,
+
+  BellIcon,
+
+  UsersIcon,
+
+  RocketIcon,
+
+  GithubIcon,
+
+  GitlabIcon,
+
+  ChromeIcon,
+
+} from 'lucide-react'
+
+type Step = 1 | 2 | 3 | 4
+
+const steps = [
+
+  {
+
+    number: 1,
+
+    title: 'Connect Repository',
+
+    description: 'Link your code repository',
+
+  },
+
+  {
+
+    number: 2,
+
+    title: 'Install SDK',
+
+    description: 'Add SynapseFlow to your app',
+
+  },
+
+  {
+
+    number: 3,
+
+    title: 'Configure Alerts',
+
+    description: 'Set up notifications',
+
+  },
+
+  {
+
+    number: 4,
+
+    title: 'Invite Team',
+
+    description: 'Add your teammates',
+
+  },
+
+]
+
+export function OnboardingPage() {
+
+  const [currentStep, setCurrentStep] = useState<Step>(1)
+
+  const [selectedRepo, setSelectedRepo] = useState<string | null>(null)
+
+  const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
+
+  const navigate = useNavigate()
+
+  const nextStep = () => {
+
+    if (currentStep < 4) {
+
+      setCurrentStep((currentStep + 1) as Step)
+
+    } else {
+
+      navigate('/')
+
+    }
+
+  }
+
+  const prevStep = () => {
+
+    if (currentStep > 1) {
+
+      setCurrentStep((currentStep - 1) as Step)
+
+    }
+
+  }
+
+  return (
+
+    <div className="min-h-screen bg-[#0f0a1e] flex">
+
+      {/* Left Panel - Progress */}
+
+      <div className="w-80 bg-[#150e2b] border-r border-[rgba(124,58,237,0.2)] p-8 flex flex-col">
+
+        {/* Logo */}
+
+        <div className="flex items-center gap-3 mb-12">
+
+          <div className="w-10 h-10 rounded-xl sf-gradient-bg flex items-center justify-center sf-glow-magenta">
+
+            <ZapIcon className="w-6 h-6 text-white" />
+
+          </div>
+
+          <span className="text-xl font-bold sf-gradient-text">
+
+            SynapseFlow
+
+          </span>
+
+        </div>
+
+        {/* Steps */}
+
+        <div className="space-y-6 flex-1">
+
+          {steps.map((step, index) => (
+
+            <div key={step.number} className="flex gap-4">
+
+              <div className="flex flex-col items-center">
+
+                <div
+
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold transition-all ${currentStep > step.number ? 'bg-[#22c55e] text-white' : currentStep === step.number ? 'sf-gradient-bg text-white sf-glow-magenta' : 'bg-[#2d1f5e] text-[#6b5f8a]'}`}
+
+                >
+
+                  {currentStep > step.number ? (
+
+                    <CheckIcon className="w-5 h-5" />
+
+                  ) : (
+
+                    step.number
+
+                  )}
+
+                </div>
+
+                {index < steps.length - 1 && (
+
+                  <div
+
+                    className={`w-0.5 h-12 mt-2 ${currentStep > step.number ? 'bg-[#22c55e]' : 'bg-[#2d1f5e]'}`}
+
+                  />
+
+                )}
+
+              </div>
+
+              <div>
+
+                <p
+
+                  className={`font-medium ${currentStep >= step.number ? 'text-[#e2dff0]' : 'text-[#6b5f8a]'}`}
+
+                >
+
+                  {step.title}
+
+                </p>
+
+                <p className="text-sm text-[#6b5f8a]">{step.description}</p>
+
+              </div>
+
+            </div>
+
+          ))}
+
+        </div>
+
+        {/* Help */}
+
+        <div className="pt-6 border-t border-[rgba(124,58,237,0.2)]">
+
+          <p className="text-sm text-[#6b5f8a]">Need help?</p>
+
+          <a href="#" className="text-sm text-[#7c3aed] hover:underline">
+
+            View documentation →
+
+          </a>
+
+        </div>
+
+      </div>
+
+      {/* Right Panel - Content */}
+
+      <div className="flex-1 flex flex-col">
+
+        <div className="flex-1 flex items-center justify-center p-12">
+
+          <div className="w-full max-w-xl">
+
+            {/* Step 1: Connect Repository */}
+
+            {currentStep === 1 && (
+
+              <div>
+
+                <h1 className="text-3xl font-bold text-[#e2dff0] mb-2">
+
+                  Connect Your Repository
+
+                </h1>
+
+                <p className="text-[#9b8fc2] mb-8">
+
+                  Choose your code hosting platform to get started
+
+                </p>
+
+                <div className="space-y-4">
+
+                  {[
+
+                    {
+
+                      id: 'github',
+
+                      name: 'GitHub',
+
+                      icon: <GithubIcon className="w-6 h-6" />,
+
+                      desc: 'Connect your GitHub repositories',
+
+                    },
+
+                    {
+
+                      id: 'gitlab',
+
+                      name: 'GitLab',
+
+                      icon: <GitlabIcon className="w-6 h-6" />,
+
+                      desc: 'Connect your GitLab projects',
+
+                    },
+
+                    {
+
+                      id: 'bitbucket',
+
+                      name: 'Bitbucket',
+
+                      icon: <CodeIcon className="w-6 h-6" />,
+
+                      desc: 'Connect your Bitbucket repos',
+
+                    },
+
+                  ].map((platform) => (
+
+                    <button
+
+                      key={platform.id}
+
+                      onClick={() => setSelectedPlatform(platform.id)}
+
+                      className={`w-full p-4 rounded-xl flex items-center gap-4 transition-all ${selectedPlatform === platform.id ? 'bg-[#7c3aed]/20 border-2 border-[#7c3aed]' : 'bg-[#1a1333] border-2 border-transparent hover:border-[rgba(124,58,237,0.3)]'}`}
+
+                    >
+
+                      <div className="w-12 h-12 rounded-lg bg-[#2d1f5e] flex items-center justify-center text-[#9b8fc2]">
+
+                        {platform.icon}
+
+                      </div>
+
+                      <div className="text-left">
+
+                        <p className="font-semibold text-[#e2dff0]">
+
+                          {platform.name}
+
+                        </p>
+
+                        <p className="text-sm text-[#6b5f8a]">
+
+                          {platform.desc}
+
+                        </p>
+
+                      </div>
+
+                      {selectedPlatform === platform.id && (
+
+                        <CheckIcon className="w-5 h-5 text-[#7c3aed] ml-auto" />
+
+                      )}
+
+                    </button>
+
+                  ))}
+
+                </div>
+
+                {selectedPlatform && (
+
+                  <div className="mt-6 p-4 bg-[#1a1333] rounded-xl">
+
+                    <p className="text-sm text-[#9b8fc2] mb-3">
+
+                      Select a repository:
+
+                    </p>
+
+                    <div className="space-y-2">
+
+                      {[
+
+                        'synapseflow/frontend',
+
+                        'synapseflow/backend',
+
+                        'synapseflow/mobile',
+
+                      ].map((repo) => (
+
+                        <button
+
+                          key={repo}
+
+                          onClick={() => setSelectedRepo(repo)}
+
+                          className={`w-full p-3 rounded-lg text-left flex items-center justify-between ${selectedRepo === repo ? 'bg-[#7c3aed]/20 text-[#e2dff0]' : 'bg-[#0f0a1e] text-[#9b8fc2] hover:bg-[#2d1f5e]/30'}`}
+
+                        >
+
+                          <span className="font-mono text-sm">{repo}</span>
+
+                          {selectedRepo === repo && (
+
+                            <CheckIcon className="w-4 h-4 text-[#7c3aed]" />
+
+                          )}
+
+                        </button>
+
+                      ))}
+
+                    </div>
+
+                  </div>
+
+                )}
+
+              </div>
+
+            )}
+
+            {/* Step 2: Install SDK */}
+
+            {currentStep === 2 && (
+
+              <div>
+
+                <h1 className="text-3xl font-bold text-[#e2dff0] mb-2">
+
+                  Install the SDK
+
+                </h1>
+
+                <p className="text-[#9b8fc2] mb-8">
+
+                  Add SynapseFlow to your application in minutes
+
+                </p>
+
+                <div className="space-y-6">
+
+                  <div>
+
+                    <p className="text-sm font-medium text-[#9b8fc2] mb-2">
+
+                      1. Install the package
+
+                    </p>
+
+                    <div className="bg-[#0f0a1e] rounded-lg p-4 font-mono text-sm">
+
+                      <span className="text-[#6b5f8a]">$</span>{' '}
+
+                      <span className="text-[#e2dff0]">
+
+                        npm install @synapseflow/sdk
+
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                  <div>
+
+                    <p className="text-sm font-medium text-[#9b8fc2] mb-2">
+
+                      2. Initialize in your app
+
+                    </p>
+
+                    <div className="bg-[#0f0a1e] rounded-lg p-4 font-mono text-sm overflow-x-auto">
+
+                      <pre className="text-[#9b8fc2]">
+
+                        {`import { SynapseFlow } from '@synapseflow/sdk';
+
+SynapseFlow.init({
+
+  dsn: 'https://abc123@synapseflow.io/1',
+
+  environment: 'production',
+
+  release: '1.0.0',
+
+});`}
+
+                      </pre>
+
+                    </div>
+
+                  </div>
+
+                  <div className="p-4 bg-[#22c55e]/10 border border-[#22c55e]/30 rounded-lg">
+
+                    <div className="flex items-center gap-2 text-[#22c55e] mb-2">
+
+                      <CheckIcon className="w-5 h-5" />
+
+                      <span className="font-medium">SDK Detected!</span>
+
+                    </div>
+
+                    <p className="text-sm text-[#9b8fc2]">
+
+                      We detected the SDK in your application. You're all set!
+
+                    </p>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            )}
+
+            {/* Step 3: Configure Alerts */}
+
+            {currentStep === 3 && (
+
+              <div>
+
+                <h1 className="text-3xl font-bold text-[#e2dff0] mb-2">
+
+                  Configure Alerts
+
+                </h1>
+
+                <p className="text-[#9b8fc2] mb-8">
+
+                  Set up how you want to be notified about issues
+
+                </p>
+
+                <div className="space-y-4">
+
+                  <div className="p-4 bg-[#1a1333] rounded-xl">
+
+                    <div className="flex items-center justify-between mb-4">
+
+                      <div className="flex items-center gap-3">
+
+                        <div className="w-10 h-10 rounded-lg bg-[#2d1f5e] flex items-center justify-center">
+
+                          <BellIcon className="w-5 h-5 text-[#7c3aed]" />
+
+                        </div>
+
+                        <div>
+
+                          <p className="font-medium text-[#e2dff0]">
+
+                            Email Notifications
+
+                          </p>
+
+                          <p className="text-sm text-[#6b5f8a]">
+
+                            Get alerts via email
+
+                          </p>
+
+                        </div>
+
+                      </div>
+
+                      <button className="w-12 h-6 rounded-full bg-[#7c3aed]">
+
+                        <div className="w-5 h-5 rounded-full bg-white translate-x-6" />
+
+                      </button>
+
+                    </div>
+
+                    <input
+
+                      type="email"
+
+                      placeholder="your@email.com"
+
+                      className="sf-input"
+
+                      defaultValue="john@synapseflow.io"
+
+                    />
+
+                  </div>
+
+                  <div className="p-4 bg-[#1a1333] rounded-xl">
+
+                    <div className="flex items-center justify-between">
+
+                      <div className="flex items-center gap-3">
+
+                        <div className="w-10 h-10 rounded-lg bg-[#2d1f5e] flex items-center justify-center text-2xl">
+
+                          💬
+
+                        </div>
+
+                        <div>
+
+                          <p className="font-medium text-[#e2dff0]">
+
+                            Slack Integration
+
+                          </p>
+
+                          <p className="text-sm text-[#6b5f8a]">
+
+                            Send alerts to Slack
+
+                          </p>
+
+                        </div>
+
+                      </div>
+
+                      <button className="sf-btn-secondary text-sm">
+
+                        Connect
+
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                  <div className="p-4 bg-[#1a1333] rounded-xl">
+
+                    <p className="font-medium text-[#e2dff0] mb-3">
+
+                      Alert Threshold
+
+                    </p>
+
+                    <div className="space-y-2">
+
+                      {[
+
+                        'All issues',
+
+                        'High priority and above',
+
+                        'Critical only',
+
+                      ].map((option, i) => (
+
+                        <label
+
+                          key={option}
+
+                          className="flex items-center gap-3 cursor-pointer"
+
+                        >
+
+                          <input
+
+                            type="radio"
+
+                            name="threshold"
+
+                            defaultChecked={i === 1}
+
+                            className="w-4 h-4 accent-[#7c3aed]"
+
+                          />
+
+                          <span className="text-[#9b8fc2]">{option}</span>
+
+                        </label>
+
+                      ))}
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            )}
+
+            {/* Step 4: Invite Team */}
+
+            {currentStep === 4 && (
+
+              <div>
+
+                <h1 className="text-3xl font-bold text-[#e2dff0] mb-2">
+
+                  Invite Your Team
+
+                </h1>
+
+                <p className="text-[#9b8fc2] mb-8">
+
+                  Collaborate with your teammates on issue resolution
+
+                </p>
+
+                <div className="space-y-4">
+
+                  <div>
+
+                    <label className="block text-sm font-medium text-[#9b8fc2] mb-2">
+
+                      Email addresses (comma separated)
+
+                    </label>
+
+                    <textarea
+
+                      className="sf-input min-h-[100px] resize-none"
+
+                      placeholder="sarah@company.com, mike@company.com"
+
+                    />
+
+                  </div>
+
+                  <div className="p-4 bg-[#1a1333] rounded-xl">
+
+                    <p className="font-medium text-[#e2dff0] mb-3">
+
+                      Default Role
+
+                    </p>
+
+                    <select className="sf-input">
+
+                      <option>Developer</option>
+
+                      <option>Viewer</option>
+
+                      <option>Admin</option>
+
+                    </select>
+
+                  </div>
+
+                  <div className="flex items-center gap-2 text-sm text-[#6b5f8a]">
+
+                    <UsersIcon className="w-4 h-4" />
+
+                    <span>
+
+                      You can always invite more team members later from
+
+                      Settings
+
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            )}
+
+          </div>
+
+        </div>
+
+        {/* Footer Navigation */}
+
+        <div className="p-6 border-t border-[rgba(124,58,237,0.2)] flex items-center justify-between">
+
+          <button
+
+            onClick={prevStep}
+
+            disabled={currentStep === 1}
+
+            className={`sf-btn-ghost flex items-center gap-2 ${currentStep === 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+
+          >
+
+            <ArrowLeftIcon className="w-4 h-4" />
+
+            Back
+
+          </button>
+
+          <div className="flex items-center gap-2">
+
+            {steps.map((step) => (
+
+              <div
+
+                key={step.number}
+
+                className={`w-2 h-2 rounded-full ${currentStep >= step.number ? 'bg-[#7c3aed]' : 'bg-[#2d1f5e]'}`}
+
+              />
+
+            ))}
+
+          </div>
+
+          <button
+
+            onClick={nextStep}
+
+            className="sf-btn-primary flex items-center gap-2"
+
+          >
+
+            {currentStep === 4 ? (
+
+              <>
+
+                <RocketIcon className="w-4 h-4" />
+
+                Launch Dashboard
+
+              </>
+
+            ) : (
+
+              <>
+
+                Continue
+
+                <ArrowRightIcon className="w-4 h-4" />
+
+              </>
+
+            )}
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  )
+
+}
+
+```
