@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" style="overflow:auto;" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SynapseFlow - Issues</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #09090b;
+      color: #ffffff;
+      line-height: 1.5;
+    }
+    
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: #09090b;
+      border-right: 1px solid #27272a;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+      padding: 0 8px;
+    }
+    
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: #06b6d4;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    
+    .logo-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    
+    .nav-item {
+      padding: 10px 12px;
+      margin-bottom: 4px;
+      border-radius: 6px;
+      color: #a1a1aa;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s;
+      border-left: 2px solid transparent;
+    }
+    
+    .nav-item:hover {
+      background: #18181b;
+      color: #ffffff;
+    }
+    
+    .nav-item.active {
+      background: rgba(6, 182, 212, 0.1);
+      color: #06b6d4;
+      border-left-color: #06b6d4;
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 32px;
+      overflow-y: auto;
+    }
+    
+    /* Page Header */
+    .page-header {
+      margin-bottom: 32px;
+    }
+    
+    .page-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+    
+    .page-description {
+      font-size: 16px;
+      color: #a1a1aa;
+    }
+    
+    /* Filters Bar */
+    .filters-bar {
+      background: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    
+    .search-box {
+      flex: 1;
+      min-width: 300px;
+      position: relative;
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #71717a;
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 10px 12px 10px 40px;
+      background: #09090b;
+      border: 1px solid #27272a;
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    
+    .search-input:focus {
+      border-color: #06b6d4;
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+    }
+    
+    .search-input::placeholder {
+      color: #71717a;
+    }
+    
+    .filter-select {
+      padding: 10px 16px;
+      background: #09090b;
+      border: 1px solid #27272a;
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 14px;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s;
+      min-width: 140px;
+    }
+    
+    .filter-select:hover {
+      border-color: #3f3f46;
+    }
+    
+    .filter-select:focus {
+      border-color: #06b6d4;
+    }
+    
+    /* Buttons */
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .btn-primary {
+      background: #06b6d4;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #0891b2;
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
+    }
+    
+    .btn-secondary {
+      background: #27272a;
+      color: #ffffff;
+      border: 1px solid #3f3f46;
+    }
+    
+    .btn-secondary:hover {
+      background: #3f3f46;
+    }
+    
+    /* Issues Table */
+    .issues-table-container {
+      background: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .issues-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .issues-table thead {
+      background: #09090b;
+      border-bottom: 1px solid #27272a;
+    }
+    
+    .issues-table th {
+      padding: 16px 20px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      color: #a1a1aa;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .issues-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid #27272a;
+      font-size: 14px;
+    }
+    
+    .issues-table tbody tr {
+      transition: all 0.2s;
+    }
+    
+    .issues-table tbody tr:hover {
+      background: #09090b;
+    }
+    
+    .issues-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    
+    /* Issue ID */
+    .issue-id {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .issue-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    
+    .issue-status-dot.critical {
+      background: #ef4444;
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+    }
+    
+    .issue-status-dot.high {
+      background: #f59e0b;
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+    }
+    
+    .issue-status-dot.medium {
+      background: #06b6d4;
+      box-shadow: 0 0 8px rgba(6, 182, 212, 0.5);
+    }
+    
+    .issue-status-dot.low {
+      background: #10b981;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+    }
+    
+    .issue-code {
+      font-family: 'Monaco', monospace;
+      color: #a1a1aa;
+      font-size: 13px;
+    }
+    
+    /* Issue Title */
+    .issue-title {
+      color: #ffffff;
+      font-weight: 500;
+      max-width: 400px;
+    }
+    
+    /* Priority Badge */
+    .priority-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .priority-badge.critical {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    
+    .priority-badge.high {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    
+    .priority-badge.medium {
+      background: rgba(6, 182, 212, 0.15);
+      color: #06b6d4;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+    
+    .priority-badge.low {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    
+    /* Stats */
+    .stat-cell {
+      color: #a1a1aa;
+      font-family: 'Monaco', monospace;
+      font-size: 13px;
+    }
+    
+    /* Assignee */
+    .assignee {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .assignee-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 12px;
+    }
+    
+    .assignee-name {
+      color: #ffffff;
+      font-size: 14px;
+    }
+    
+    .unassigned {
+      color: #71717a;
+      font-style: italic;
+    }
+    
+    /* Timestamp */
+    .timestamp {
+      color: #71717a;
+      font-size: 13px;
+    }
+    
+    /* Actions */
+    .action-btn {
+      padding: 6px 12px;
+      background: transparent;
+      border: 1px solid #27272a;
+      border-radius: 6px;
+      color: #a1a1aa;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .action-btn:hover {
+      background: #06b6d4;
+      border-color: #06b6d4;
+      color: white;
+    }
+    
+    /* Pagination */
+    .pagination {
+      margin-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .pagination-info {
+      color: #a1a1aa;
+      font-size: 14px;
+    }
+    
+    .pagination-controls {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .page-btn {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 6px;
+      color: #a1a1aa;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+    }
+    
+    .page-btn:hover {
+      background: #27272a;
+      border-color: #3f3f46;
+      color: #ffffff;
+    }
+    
+    .page-btn.active {
+      background: #06b6d4;
+      border-color: #06b6d4;
+      color: white;
+    }
+    
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .filters-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .search-box {
+        min-width: 100%;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      
+      .issues-table-container {
+        overflow-x: auto;
+      }
+      
+      .issue-title {
+        max-width: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-icon">⚡</div>
+        <span class="logo-text">SynapseFlow</span>
+      </div>
+      
+      <nav>
+        <a href="#" class="nav-item">
+          <span>📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-item active">
+          <span>🚨</span>
+          <span>Issues</span>
+        </a>
+        <a href="#" class="nav-item">
+          <span>📈</span>
+          <span>Reports</span>
+        </a>
+        <a href="#" class="nav-item">
+          <span>🎨</span>
+          <span>Figma Review</span>
+        </a>
+        <a href="#" class="nav-item">
+          <span>💻</span>
+          <span>GitHub PR</span>
+        </a>
+        <a href="#" class="nav-item">
+          <span>⚙️</span>
+          <span>Settings</span>
+        </a>
+      </nav>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1 class="page-title">Issues</h1>
+        <p class="page-description">Track and resolve errors across your application</p>
+      </div>
+      
+      <!-- Filters Bar -->
+      <div class="filters-bar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" placeholder="Search issues...">
+        </div>
+        
+        <select class="filter-select">
+          <option value="">Status: All</option>
+          <option value="open">Open</option>
+          <option value="investigating">Investigating</option>
+          <option value="resolved">Resolved</option>
+          <option value="closed">Closed</option>
+        </select>
+        
+        <select class="filter-select">
+          <option value="">Priority: All</option>
+          <option value="critical">Critical</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+        
+        <select class="filter-select">
+          <option value="">Assignee: All</option>
+          <option value="me">Assigned to me</option>
+          <option value="unassigned">Unassigned</option>
+        </select>
+        
+        <button class="btn btn-primary">
+          <span>+</span>
+          <span>Create Issue</span>
+        </button>
+      </div>
+      
+      <!-- Issues Table -->
+      <div class="issues-table-container">
+        <table class="issues-table">
+          <thead>
+            <tr>
+              <th>Issue</th>
+              <th>Priority</th>
+              <th>Events</th>
+              <th>Users</th>
+              <th>Assignee</th>
+              <th>Last Seen</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="issue-id">
+                  <div class="issue-status-dot critical"></div>
+                  <div>
+                    <div class="issue-code">ISS-1234</div>
+                    <div class="issue-title">TypeError: Cannot read property "map" of undefined</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="priority-badge critical">Critical</span>
+              </td>
+              <td class="stat-cell">2,847</td>
+              <td class="stat-cell">1,234</td>
+              <td>
+                <div class="assignee">
+                  <div class="assignee-avatar">SC</div>
+                  <span class="assignee-name">Sarah Chen</span>
+                </div>
+              </td>
+              <td class="timestamp">2 min ago</td>
+              <td>
+                <button class="action-btn">View</button>
+              </td>
+            </tr>
+            
+            <tr>
+              <td>
+                <div class="issue-id">
+                  <div class="issue-status-dot high"></div>
+                  <div>
+                    <div class="issue-code">ISS-1233</div>
+                    <div class="issue-title">API timeout on /api/checkout endpoint</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="priority-badge high">High</span>
+              </td>
+              <td class="stat-cell">1,523</td>
+              <td class="stat-cell">892</td>
+              <td>
+                <div class="assignee">
+                  <div class="assignee-avatar">MR</div>
+                  <span class="assignee-name">Mike Ross</span>
+                </div>
+              </td>
+              <td class="timestamp">15 min ago</td>
+              <td>
+                <button class="action-btn">View</button>
+              </td>
+            </tr>
+            
+            <tr>
+              <td>
+                <div class="issue-id">
+                  <div class="issue-status-dot high"></div>
+                  <div>
+                    <div class="issue-code">ISS-1232</div>
+                    <div class="issue-title">Memory leak in WebSocket connection handler</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="priority-badge high">High</span>
+              </td>
+              <td class="stat-cell">892</td>
+              <td class="stat-cell">456</td>
+              <td>
+                <div class="assignee">
+                  <div class="assignee-avatar">AK</div>
+                  <span class="assignee-name">Alex Kim</span>
+                </div>
+              </td>
+              <td class="timestamp">1 hour ago</td>
+              <td>
+                <button class="action-btn">View</button>
+              </td>
+            </tr>
+            
+            <tr>
+              <td>
+                <div class="issue-id">
+                  <div class="issue-status-dot medium"></div>
+                  <div>
+                    <div class="issue-code">ISS-1231</div>
+                    <div class="issue-title">Slow database query on user dashboard</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="priority-badge medium">Medium</span>
+              </td>
+              <td class="stat-cell">456</td>
+              <td class="stat-cell">234</td>
+              <td>
+                <div class="assignee">
+                  <div class="assignee-avatar">JD</div>
+                  <span class="assignee-name">John Doe</span>
+                </div>
+              </td>
+              <td class="timestamp">2 hours ago</td>
+              <td>
+                <button class="action-btn">View</button>
+              </td>
+            </tr>
+            
+            <tr>
+              <td>
+                <div class="issue-id">
+                  <div class="issue-status-dot low"></div>
+                  <div>
+                    <div class="issue-code">ISS-1230</div>
+                    <div class="issue-title">CSS layout shift on mobile navigation</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="priority-badge low">Low</span>
+              </td>
+              <td class="stat-cell">234</td>
+              <td class="stat-cell">156</td>
+              <td>
+                <div class="assignee">
+                  <div class="assignee-avatar">EW</div>
+                  <span class="assignee-name">Emma Wilson</span>
+                </div>
+              </td>
+              <td class="timestamp">4 hours ago</td>
+              <td>
+                <button class="action-btn">View</button>
+              </td>
+            </tr>
+            
+            <tr>
+              <td>
+                <div class="issue-id">
+                  <div class="issue-status-dot critical"></div>
+                  <div>
+                    <div class="issue-code">ISS-1229</div>
+                    <div class="issue-title">Unhandled promise rejection in auth flow</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="priority-badge critical">Critical</span>
+              </td>
+              <td class="stat-cell">5,621</td>
+              <td class="stat-cell">2,341</td>
+              <td>
+                <div class="assignee">
+                  <div class="assignee-avatar">SC</div>
+                  <span class="assignee-name">Sarah Chen</span>
+                </div>
+              </td>
+              <td class="timestamp">1 day ago</td>
+              <td>
+                <button class="action-btn">View</button>
+              </td>
+            </tr>
+            
+            <tr>
+              <td>
+                <div class="issue-id">
+                  <div class="issue-status-dot high"></div>
+                  <div>
+                    <div class="issue-code">ISS-1228</div>
+                    <div class="issue-title">Rate limiting not working correctly</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="priority-badge high">High</span>
+              </td>
+              <td class="stat-cell">789</td>
+              <td class="stat-cell">345</td>
+              <td>
+                <span class="unassigned">Unassigned</span>
+              </td>
+              <td class="timestamp">3 hours ago</td>
+              <td>
+                <button class="action-btn">View</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Pagination -->
+      <div class="pagination">
+        <div class="pagination-info">
+          Showing <strong>1-10</strong> of <strong>248</strong> issues
+        </div>
+        <div class="pagination-controls">
+          <button class="page-btn" disabled>‹</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">...</button>
+          <button class="page-btn">25</button>
+          <button class="page-btn">›</button>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
